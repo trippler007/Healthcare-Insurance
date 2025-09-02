@@ -3,13 +3,14 @@ import pickle
 import numpy as np
 import pandas as pd
 
-# Load model and columns
+# Load trained model
 model = pickle.load(open("model.pkl", "rb"))
-columns = pickle.load(open("columns.pkl", "rb"))
 
-st.title("💊 Medical Insurance Charges Prediction")
+st.title("💡 Medical Insurance Cost Predictor")
 
-# User Inputs
+st.write("Fill in the details below to estimate medical insurance charges.")
+
+# Collect user input
 age = st.number_input("Age", min_value=0, max_value=100, value=25)
 sex = st.selectbox("Sex", ["male", "female"])
 bmi = st.number_input("BMI", min_value=10.0, max_value=50.0, value=25.0)
@@ -17,22 +18,22 @@ children = st.number_input("Number of Children", min_value=0, max_value=10, valu
 smoker = st.selectbox("Smoker", ["yes", "no"])
 region = st.selectbox("Region", ["northeast", "northwest", "southeast", "southwest"])
 
-# Convert inputs to DataFrame
-input_data = pd.DataFrame([[age, sex, bmi, children, smoker, region]], 
-                          columns=['age', 'sex', 'bmi', 'children', 'smoker', 'region'])
+# Convert input into dataframe (must match training preprocessing)
+input_dict = {
+    "age": [age],
+    "sex": [1 if sex == "male" else 0],  # Label encoding
+    "bmi": [bmi],
+    "children": [children],
+    "smoker": [1 if smoker == "yes" else 0],  # Label encoding
+    "region_northeast": [1 if region == "northeast" else 0],
+    "region_northwest": [1 if region == "northwest" else 0],
+    "region_southeast": [1 if region == "southeast" else 0],
+    "region_southwest": [1 if region == "southwest" else 0],
+}
 
-# Apply same preprocessing as training
-input_data['sex'] = input_data['sex'].map({'female':0, 'male':1})
-input_data['smoker'] = input_data['smoker'].map({'no':0, 'yes':1})
-input_data = pd.get_dummies(input_data, columns=['region'], dtype=int)
+input_df = pd.DataFrame(input_dict)
 
-# Ensure same column order
-for col in columns:
-    if col not in input_data:
-        input_data[col] = 0
-input_data = input_data[columns]
-
-# Predict
-if st.button("Predict Charges"):
-    prediction = model.predict(input_data)[0]
-    st.success(f"Estimated Insurance Charges: ${prediction:,.2f}")
+# Predict button
+if st.button("Predict Insurance Charges"):
+    prediction = model.predict(input_df)[0]
+    st.success(f"Estimated Insurance Cost: ${prediction:,.2f}")
