@@ -21,14 +21,11 @@ region = st.selectbox("Region", ["northeast", "northwest", "southeast", "southwe
 # Convert input into dataframe (must match training preprocessing)
 input_dict = {
     "age": [age],
-    "sex": [1 if sex == "male" else 0],  # Label encoding
+    "sex": [sex],
     "bmi": [bmi],
     "children": [children],
-    "smoker": [1 if smoker == "yes" else 0],  # Label encoding
-    "region_northeast": [1 if region == "northeast" else 0],
-    "region_northwest": [1 if region == "northwest" else 0],
-    "region_southeast": [1 if region == "southeast" else 0],
-    "region_southwest": [1 if region == "southwest" else 0],
+    "smoker": [smoker],
+    "region": [region],
 }
 
 input_df = pd.DataFrame(input_dict)
