@@ -1,10 +1,10 @@
 import streamlit as st
-import pickle
+import joblib
 import numpy as np
 import pandas as pd
 
 # Load trained model
-model = pickle.load(open("model.pkl", "rb"))
+model = joblib.load(open("model.joblib", "rb"))
 
 st.title("💡 Medical Insurance Cost Predictor")
 
