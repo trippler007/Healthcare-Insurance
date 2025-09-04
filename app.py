@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 # Load trained model
-model = joblib.load(open("model.joblib", "rb"))
+model = joblib.load("model.joblib")
 
 st.title("💡 Medical Insurance Cost Predictor")
 
