@@ -37,5 +37,5 @@ input_df = pd.DataFrame(input_dict)
 # Predict button
 if st.button("Predict Insurance Charges"):
     prediction = model.predict(input_df)[0]
-    st.success(f"Estimated Insurance Cost: Rs {prediction:,.2f}")
     st.info(f"Calculated BMI: {bmi:.2f}")
+    st.success(f"Estimated Insurance Cost: Rs {prediction:,.2f}")
