@@ -5,94 +5,120 @@ import pandas as pd
 # Load model
 model = joblib.load("model.joblib")
 
-# Page configuration
 st.set_page_config(
-    page_title="HealthSure | Medical Insurance Cost Estimator",
+    page_title="InsureSense | Medical Insurance Cost Estimation",
     layout="wide"
 )
 
-# Custom CSS for professional styling
+# ================= CUSTOM CSS =================
 st.markdown("""
 <style>
-    .main {
-        background-color: #f7f9fc;
-    }
-    .title-text {
-        font-size: 38px;
-        font-weight: 700;
-        color: #1f2933;
-    }
-    .subtitle-text {
-        font-size: 16px;
-        color: #4b5563;
-        margin-bottom: 25px;
-    }
-    .section-header {
-        font-size: 22px;
-        font-weight: 600;
-        color: #111827;
-        margin-top: 30px;
-        margin-bottom: 15px;
-    }
-    .card {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
-        margin-bottom: 20px;
-    }
-    .result-value {
-        font-size: 28px;
-        font-weight: 700;
-        color: #0f172a;
-    }
-    .result-label {
-        font-size: 14px;
-        color: #6b7280;
-    }
+body {
+    background: linear-gradient(135deg, #0f172a, #020617);
+}
+
+.main {
+    background: transparent;
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px;
+}
+
+.title {
+    font-size: 42px;
+    font-weight: 700;
+    color: #e5e7eb;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: #9ca3af;
+    margin-bottom: 35px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.4);
+    margin-bottom: 25px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f9fafb;
+    margin-bottom: 20px;
+}
+
+.label-text {
+    color: #d1d5db;
+}
+
+.result-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: #38bdf8;
+}
+
+.bmi-value {
+    font-size: 28px;
+    font-weight: 600;
+    color: #facc15;
+}
+
+.note {
+    font-size: 13px;
+    color: #9ca3af;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# Title section
-st.markdown('<div class="title-text">HealthSure: Medical Insurance Cost Estimator</div>', unsafe_allow_html=True)
+# ================= APP UI =================
+st.markdown('<div class="app-container">', unsafe_allow_html=True)
+
+st.markdown('<div class="title">InsureSense</div>', unsafe_allow_html=True)
 st.markdown(
-    '<div class="subtitle-text">'
-    'Predict estimated medical insurance charges based on personal, lifestyle, '
-    'and demographic information using a machine learning model.'
+    '<div class="subtitle">'
+    'An intelligent system that estimates medical insurance costs using personal, '
+    'health, and lifestyle attributes.'
     '</div>',
     unsafe_allow_html=True
 )
 
-# Input section
-st.markdown('<div class="section-header">Personal & Lifestyle Information</div>', unsafe_allow_html=True)
+# Input Section
+st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+st.markdown('<div class="section-title">Personal & Health Details</div>', unsafe_allow_html=True)
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 
 with col1:
-    with st.container():
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        age = st.slider("Age", 18, 100, 25)
-        sex = st.selectbox("Gender", ["male", "female"])
-        children = st.number_input("Number of Dependents", 0, 10, 0)
-        smoker = st.selectbox("Smoking Status", ["yes", "no"])
-        st.markdown('</div>', unsafe_allow_html=True)
+    age = st.slider("Age", 18, 100, 30)
+    sex = st.selectbox("Gender", ["male", "female"])
 
 with col2:
-    with st.container():
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        height = st.slider("Height (cm)", 140, 210, 170)
-        weight = st.slider("Weight (kg)", 40, 150, 70)
-        region = st.selectbox(
-            "Residential Region",
-            ["northeast", "northwest", "southeast", "southwest"]
-        )
-        st.markdown('</div>', unsafe_allow_html=True)
+    height = st.slider("Height (cm)", 140, 210, 170)
+    weight = st.slider("Weight (kg)", 40, 150, 70)
 
-# BMI calculation
+with col3:
+    children = st.number_input("Number of Dependents", 0, 10, 0)
+    smoker = st.selectbox("Smoking Status", ["yes", "no"])
+
+region = st.selectbox(
+    "Residential Region",
+    ["northeast", "northwest", "southeast", "southwest"]
+)
+
+st.markdown('</div>', unsafe_allow_html=True)
+
+# BMI Calculation
 height_m = height / 100
 bmi = weight / (height_m ** 2)
 
-# Prepare input for model
 input_df = pd.DataFrame({
     "age": [age],
     "sex": [sex],
@@ -102,38 +128,39 @@ input_df = pd.DataFrame({
     "region": [region]
 })
 
-# Prediction section
-st.markdown('<div class="section-header">Prediction Result</div>', unsafe_allow_html=True)
+# Predict Button
+st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+predict = st.button("Generate Insurance Cost Estimate", use_container_width=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
-predict_col1, predict_col2 = st.columns([1, 3])
-
-with predict_col1:
-    predict_button = st.button("Estimate Insurance Cost", use_container_width=True)
-
-with predict_col2:
-    st.markdown(
-        "Click the button to calculate your estimated medical insurance charges "
-        "based on the provided information."
-    )
-
-if predict_button:
+# Result Section
+if predict:
     prediction = model.predict(input_df)[0]
 
-    result_col1, result_col2 = st.columns(2)
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Estimated Outcome</div>', unsafe_allow_html=True)
 
-    with result_col1:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="result-label">Calculated Body Mass Index</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="result-value">{bmi:.2f}</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+    r1, r2 = st.columns(2)
 
-    with result_col2:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="result-label">Estimated Annual Insurance Cost</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="result-value">Rs {prediction:,.2f}</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+    with r1:
+        st.markdown("Body Mass Index")
+        st.markdown(f'<div class="bmi-value">{bmi:.2f}</div>', unsafe_allow_html=True)
 
-    st.info(
-        "This estimate is generated using a machine learning model trained on historical "
-        "insurance data and should be used for informational purposes only."
+    with r2:
+        st.markdown("Estimated Annual Insurance Cost")
+        st.markdown(
+            f'<div class="result-value">Rs {prediction:,.2f}</div>',
+            unsafe_allow_html=True
+        )
+
+    st.markdown(
+        '<div class="note">'
+        'This estimation is generated using a machine learning model trained on historical insurance data. '
+        'Actual costs may vary.'
+        '</div>',
+        unsafe_allow_html=True
     )
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
