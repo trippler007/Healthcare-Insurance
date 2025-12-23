@@ -16,29 +16,56 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# BASIC READABLE THEME
+# READABLE + FILLED THEME
 # --------------------------------------------------
 st.markdown("""
 <style>
 body {
     background-color: #f9fafb;
 }
-h1, h2, h3 {
-    color: #0f172a;
-}
-p, li {
-    color: #334155;
-    font-size: 15px;
-}
+
+/* Main content width control */
 .block-container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    max-width: 1000px;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+/* Headings */
+h1 {
+    font-size: 42px;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 30px;
+    color: #0f172a;
+    margin-top: 2.5rem;
+}
+
+h3 {
+    font-size: 22px;
+    color: #1e293b;
+}
+
+/* Text */
+p, li {
+    font-size: 17px;
+    color: #334155;
+    line-height: 1.8;
+}
+
+/* Buttons */
+.stButton>button {
+    font-size: 16px;
+    padding: 0.6rem 1.2rem;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# SESSION STATE FOR NAVIGATION
+# SESSION STATE
 # --------------------------------------------------
 if "page" not in st.session_state:
     st.session_state.page = "Home"
@@ -76,18 +103,22 @@ if page == "Home":
     st.subheader("Medical Insurance Cost Estimation using Machine Learning")
 
     st.markdown("""
-    Healthcare insurance costs depend on multiple personal, health, and lifestyle factors.
-    This application estimates medical insurance charges using a machine learning model
-    trained on real-world insurance data.
+    Healthcare insurance costs are influenced by a combination of personal characteristics,
+    health metrics, and lifestyle habits. Accurately estimating these costs can be challenging
+    for individuals planning their healthcare expenses.
+
+    InsureSense uses a machine learning model trained on real-world healthcare insurance data
+    to provide an estimated annual insurance cost based on user-provided inputs.
     """)
 
-    st.markdown("### Why this matters")
+    st.markdown("## Why this matters")
     st.markdown("""
-    - Healthcare costs are rising and difficult to predict  
-    - Lifestyle choices like smoking and BMI impact insurance pricing  
-    - Data-driven estimates support better financial planning  
+    - Healthcare costs continue to rise globally  
+    - Lifestyle choices such as smoking and body mass index strongly influence insurance pricing  
+    - Data-driven cost estimates support informed financial and healthcare planning  
     """)
 
+    st.markdown("### Get Started")
     if st.button("Estimate Your Insurance Cost"):
         st.session_state.page = "Cost Estimator"
         st.rerun()
@@ -97,7 +128,12 @@ if page == "Home":
 # --------------------------------------------------
 elif page == "Cost Estimator":
     st.header("Medical Insurance Cost Estimator")
-    st.write("Enter your personal and health details below.")
+    st.markdown("""
+    Enter your personal, health, and lifestyle details below. The system will process
+    this information and generate an estimated annual insurance cost.
+    """)
+
+    st.markdown("### User Information")
 
     col1, col2, col3 = st.columns(3)
 
@@ -131,12 +167,13 @@ elif page == "Cost Estimator":
         "region": [region]
     })
 
+    st.markdown("### Generate Estimate")
     predict = st.button("Generate Cost Estimate")
 
     if predict:
         prediction = model.predict(input_df)[0]
 
-        st.success("Insurance cost estimated successfully")
+        st.success("Insurance cost estimate generated successfully")
 
         col1, col2 = st.columns(2)
         with col1:
@@ -144,7 +181,7 @@ elif page == "Cost Estimator":
         with col2:
             st.metric("Estimated Annual Cost", f"Rs {prediction:,.2f}")
 
-        st.caption("This estimate is for informational purposes only.")
+        st.caption("This estimate is generated using a machine learning model and is for informational purposes only.")
 
 # --------------------------------------------------
 # HOW IT WORKS PAGE
@@ -153,17 +190,20 @@ elif page == "How It Works":
     st.header("How the System Works")
 
     st.markdown("""
-    **1. Data Collection**  
-    The dataset includes age, BMI, smoking status, dependents, region, and insurance charges.
+    **Step 1: Data Collection**  
+    The model is trained on a healthcare insurance dataset containing demographic,
+    lifestyle, and regional information along with historical insurance charges.
 
-    **2. Feature Processing**  
-    Categorical features are encoded and BMI is calculated.
+    **Step 2: Feature Processing**  
+    Categorical features such as gender, smoking status, and region are encoded.
+    Body Mass Index (BMI) is calculated from height and weight.
 
-    **3. Model Training**  
-    A supervised machine learning regression model is trained on historical insurance data.
+    **Step 3: Model Training**  
+    A supervised machine learning regression model learns patterns from historical
+    insurance data.
 
-    **4. Prediction**  
-    User inputs are processed and passed to the trained model to estimate insurance cost.
+    **Step 4: Prediction**  
+    User inputs are passed to the trained model to estimate the insurance cost.
     """)
 
 # --------------------------------------------------
@@ -173,14 +213,19 @@ elif page == "Insights & Factors":
     st.header("Key Factors Affecting Insurance Cost")
 
     st.markdown("""
-    - **Age:** Insurance cost generally increases with age  
-    - **Smoking:** Smoking significantly raises insurance charges  
-    - **BMI:** Higher BMI is associated with increased healthcare risk  
-    - **Dependents:** More dependents can increase coverage cost  
-    - **Region:** Insurance pricing varies across regions  
+    Several factors influence healthcare insurance pricing. Understanding these
+    factors helps users interpret the estimated cost more effectively.
     """)
 
-    st.markdown("**Most impactful factors:** Smoking status and BMI")
+    st.markdown("""
+    - **Age:** Insurance costs generally increase as age increases  
+    - **Smoking Status:** Smoking has a significant impact on insurance charges  
+    - **Body Mass Index (BMI):** Higher BMI often correlates with increased healthcare risk  
+    - **Number of Dependents:** Additional dependents can raise total coverage cost  
+    - **Geographic Region:** Insurance pricing varies across different regions  
+    """)
+
+    st.markdown("**Most influential factors:** Smoking status and BMI")
 
 # --------------------------------------------------
 # ABOUT PAGE
@@ -189,14 +234,15 @@ elif page == "About the Project":
     st.header("About the Project")
 
     st.markdown("""
-    This project demonstrates the application of machine learning in predicting healthcare
-    insurance costs based on demographic and lifestyle attributes.
+    This project demonstrates the practical application of machine learning techniques
+    in predicting healthcare insurance costs based on demographic and lifestyle attributes.
+    It is designed for educational, analytical, and portfolio purposes.
     """)
 
     st.markdown("### Tech Stack")
     st.markdown("""
     - Python  
-    - Pandas, NumPy  
+    - Pandas and NumPy  
     - Scikit-learn  
     - Streamlit  
     - Joblib  
@@ -205,12 +251,12 @@ elif page == "About the Project":
     st.markdown("### Dataset")
     st.markdown("""
     Healthcare Insurance Dataset  
-    [Click here to access the dataset](https://healthcare-insurance-j6tw5lybbhumwmlrghpvp6.streamlit.app/#medical-insurance-cost-predictor)
+    [Access the dataset here](https://healthcare-insurance-j6tw5lybbhumwmlrghpvp6.streamlit.app/#medical-insurance-cost-predictor)
     """)
 
     st.markdown("### Use Case")
     st.markdown("""
-    - Educational purposes  
-    - Financial planning insights  
-    - Healthcare analytics demonstration  
+    - Educational demonstrations of machine learning  
+    - Financial planning and cost estimation  
+    - Healthcare analytics use cases  
     """)
