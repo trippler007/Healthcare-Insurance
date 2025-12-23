@@ -2,15 +2,16 @@ import streamlit as st
 import joblib
 import pandas as pd
 
-# Load model
-model = joblib.load("model.joblib")
-
+# ---------------- CONFIG ----------------
 st.set_page_config(
     page_title="InsureSense | Medical Insurance Cost Estimation",
     layout="wide"
 )
 
-# ================= CUSTOM CSS =================
+# ---------------- LOAD MODEL ----------------
+model = joblib.load("model.joblib")
+
+# ---------------- GLOBAL CSS ----------------
 st.markdown("""
 <style>
 body {
@@ -43,29 +44,30 @@ body {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
     border-radius: 16px;
-    padding: 25px;
+    padding: 30px;
     box-shadow: 0px 10px 30px rgba(0,0,0,0.4);
     margin-bottom: 25px;
 }
 
 .section-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
     color: #f9fafb;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
-.label-text {
+.text {
     color: #d1d5db;
+    line-height: 1.6;
 }
 
-.result-value {
+.highlight {
     font-size: 36px;
     font-weight: 700;
     color: #38bdf8;
 }
 
-.bmi-value {
+.bmi {
     font-size: 28px;
     font-weight: 600;
     color: #facc15;
@@ -78,89 +80,210 @@ body {
 </style>
 """, unsafe_allow_html=True)
 
-# ================= APP UI =================
-st.markdown('<div class="app-container">', unsafe_allow_html=True)
-
-st.markdown('<div class="title">InsureSense</div>', unsafe_allow_html=True)
-st.markdown(
-    '<div class="subtitle">'
-    'An intelligent system that estimates medical insurance costs using personal, '
-    'health, and lifestyle attributes.'
-    '</div>',
-    unsafe_allow_html=True
+# ---------------- SIDEBAR ----------------
+st.sidebar.title("InsureSense")
+page = st.sidebar.radio(
+    "Navigation",
+    [
+        "Home",
+        "Cost Estimator",
+        "How It Works",
+        "Insights & Factors",
+        "About Project"
+    ]
 )
 
-# Input Section
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-st.markdown('<div class="section-title">Personal & Health Details</div>', unsafe_allow_html=True)
+# ---------------- HOME PAGE ----------------
+if page == "Home":
+    st.markdown('<div class="app-container">', unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    age = st.slider("Age", 18, 100, 30)
-    sex = st.selectbox("Gender", ["male", "female"])
-
-with col2:
-    height = st.slider("Height (cm)", 140, 210, 170)
-    weight = st.slider("Weight (kg)", 40, 150, 70)
-
-with col3:
-    children = st.number_input("Number of Dependents", 0, 10, 0)
-    smoker = st.selectbox("Smoking Status", ["yes", "no"])
-
-region = st.selectbox(
-    "Residential Region",
-    ["northeast", "northwest", "southeast", "southwest"]
-)
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-# BMI Calculation
-height_m = height / 100
-bmi = weight / (height_m ** 2)
-
-input_df = pd.DataFrame({
-    "age": [age],
-    "sex": [sex],
-    "bmi": [bmi],
-    "children": [children],
-    "smoker": [smoker],
-    "region": [region]
-})
-
-# Predict Button
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-predict = st.button("Generate Insurance Cost Estimate", use_container_width=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Result Section
-if predict:
-    prediction = model.predict(input_df)[0]
-
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">Estimated Outcome</div>', unsafe_allow_html=True)
-
-    r1, r2 = st.columns(2)
-
-    with r1:
-        st.markdown("Body Mass Index")
-        st.markdown(f'<div class="bmi-value">{bmi:.2f}</div>', unsafe_allow_html=True)
-
-    with r2:
-        st.markdown("Estimated Annual Insurance Cost")
-        st.markdown(
-            f'<div class="result-value">Rs {prediction:,.2f}</div>',
-            unsafe_allow_html=True
-        )
-
+    st.markdown('<div class="title">InsureSense</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="note">'
-        'This estimation is generated using a machine learning model trained on historical insurance data. '
-        'Actual costs may vary.'
+        '<div class="subtitle">'
+        'Intelligent Medical Insurance Cost Estimation using Machine Learning'
         '</div>',
         unsafe_allow_html=True
     )
 
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Why This Matters</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="text">
+    • Healthcare costs are rising and difficult to predict<br>
+    • Lifestyle and health factors significantly impact insurance charges<br>
+    • Data-driven estimates help individuals plan finances better
+    </div>
+    """, unsafe_allow_html=True)
+
     st.markdown('</div>', unsafe_allow_html=True)
 
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown(
+        "Use this application to estimate medical insurance costs "
+        "based on personal, health, and lifestyle information.",
+        unsafe_allow_html=True
+    )
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ---------------- COST ESTIMATOR ----------------
+elif page == "Cost Estimator":
+    st.markdown('<div class="app-container">', unsafe_allow_html=True)
+
+    st.markdown('<div class="title">Medical Insurance Cost Estimator</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="subtitle">'
+        'Provide your details to receive an estimated insurance cost generated by a trained ML model.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Personal, Health & Lifestyle Information</div>', unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        age = st.slider("Age", 18, 100, 30)
+        sex = st.selectbox("Gender", ["male", "female"])
+
+    with col2:
+        height = st.slider("Height (cm)", 140, 210, 170)
+        weight = st.slider("Weight (kg)", 40, 150, 70)
+
+    with col3:
+        children = st.number_input("Number of Dependents", 0, 10, 0)
+        smoker = st.selectbox("Smoking Status", ["yes", "no"])
+
+    region = st.selectbox(
+        "Residential Region",
+        ["northeast", "northwest", "southeast", "southwest"]
+    )
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    height_m = height / 100
+    bmi = weight / (height_m ** 2)
+
+    input_df = pd.DataFrame({
+        "age": [age],
+        "sex": [sex],
+        "bmi": [bmi],
+        "children": [children],
+        "smoker": [smoker],
+        "region": [region]
+    })
+
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    predict = st.button("Generate Cost Estimate", use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    if predict:
+        prediction = model.predict(input_df)[0]
+
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">Estimated Results</div>', unsafe_allow_html=True)
+
+        r1, r2 = st.columns(2)
+
+        with r1:
+            st.markdown("Calculated BMI")
+            st.markdown(f'<div class="bmi">{bmi:.2f}</div>', unsafe_allow_html=True)
+
+        with r2:
+            st.markdown("Estimated Annual Insurance Cost")
+            st.markdown(
+                f'<div class="highlight">Rs {prediction:,.2f}</div>',
+                unsafe_allow_html=True
+            )
+
+        st.markdown(
+            '<div class="note">'
+            'This estimate is for informational purposes only and may vary in real-world scenarios.'
+            '</div>',
+            unsafe_allow_html=True
+        )
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ---------------- HOW IT WORKS ----------------
+elif page == "How It Works":
+    st.markdown('<div class="app-container">', unsafe_allow_html=True)
+
+    st.markdown('<div class="title">How the System Works</div>', unsafe_allow_html=True)
+
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="text">
+    <b>1. Data Collection</b><br>
+    Historical insurance data including age, BMI, smoking status, region and charges<br><br>
+
+    <b>2. Feature Processing</b><br>
+    Categorical values encoded and BMI calculated<br><br>
+
+    <b>3. Model Training</b><br>
+    Supervised regression model trained on real insurance data<br><br>
+
+    <b>4. Prediction</b><br>
+    User inputs are processed and passed to the trained model
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ---------------- INSIGHTS ----------------
+elif page == "Insights & Factors":
+    st.markdown('<div class="app-container">', unsafe_allow_html=True)
+
+    st.markdown('<div class="title">Key Cost Influencing Factors</div>', unsafe_allow_html=True)
+
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="text">
+    • Age: Higher age generally increases insurance cost<br>
+    • Smoking: One of the strongest contributors to higher charges<br>
+    • BMI: Higher BMI is often linked to increased healthcare expenses<br>
+    • Dependents: More dependents can increase coverage cost<br>
+    • Region: Geographic location affects insurance pricing
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ---------------- ABOUT ----------------
+elif page == "About Project":
+    st.markdown('<div class="app-container">', unsafe_allow_html=True)
+
+    st.markdown('<div class="title">About the Project</div>', unsafe_allow_html=True)
+
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="text">
+    This project demonstrates the application of machine learning for predicting
+    healthcare insurance costs based on demographic and lifestyle attributes.
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="text">
+    <b>Tech Stack</b><br>
+    Python, Pandas, NumPy, Scikit-learn, Streamlit, Joblib<br><br>
+
+    <b>Dataset</b><br>
+    Healthcare Insurance Dataset from Kaggle<br><br>
+
+    <b>Use Case</b><br>
+    Educational, financial planning, healthcare analytics demonstration
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
