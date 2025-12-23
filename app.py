@@ -16,7 +16,7 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# BASIC SAFE THEME (READABLE)
+# BASIC READABLE THEME
 # --------------------------------------------------
 st.markdown("""
 <style>
@@ -38,7 +38,13 @@ p, li {
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# SIDEBAR NAVIGATION (NO DROPDOWN)
+# SESSION STATE FOR NAVIGATION
+# --------------------------------------------------
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
+
+# --------------------------------------------------
+# SIDEBAR NAVIGATION
 # --------------------------------------------------
 st.sidebar.title("InsureSense")
 
@@ -50,8 +56,17 @@ page = st.sidebar.radio(
         "How It Works",
         "Insights & Factors",
         "About the Project"
-    ]
+    ],
+    index=[
+        "Home",
+        "Cost Estimator",
+        "How It Works",
+        "Insights & Factors",
+        "About the Project"
+    ].index(st.session_state.page)
 )
+
+st.session_state.page = page
 
 # --------------------------------------------------
 # HOME PAGE
@@ -72,6 +87,10 @@ if page == "Home":
     - Lifestyle choices like smoking and BMI impact insurance pricing  
     - Data-driven estimates support better financial planning  
     """)
+
+    if st.button("Estimate Your Insurance Cost"):
+        st.session_state.page = "Cost Estimator"
+        st.rerun()
 
 # --------------------------------------------------
 # COST ESTIMATOR PAGE
@@ -184,7 +203,10 @@ elif page == "About the Project":
     """)
 
     st.markdown("### Dataset")
-    st.markdown("Healthcare Insurance Dataset from Kaggle")
+    st.markdown("""
+    Healthcare Insurance Dataset  
+    [Click here to access the dataset](https://healthcare-insurance-j6tw5lybbhumwmlrghpvp6.streamlit.app/#medical-insurance-cost-predictor)
+    """)
 
     st.markdown("### Use Case")
     st.markdown("""
@@ -192,4 +214,3 @@ elif page == "About the Project":
     - Financial planning insights  
     - Healthcare analytics demonstration  
     """)
-
