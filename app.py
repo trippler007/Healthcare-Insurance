@@ -22,7 +22,7 @@ st.markdown("""
 <style>
 /* Background gradient for the whole page */
 body {
-    background: linear-gradient(135deg, #e0f7fa, #ffffff);
+    background-color: #f0f4f8;
 }
 
 /* Content width */
