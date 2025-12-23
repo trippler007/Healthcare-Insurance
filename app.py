@@ -9,12 +9,8 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
 <style>
-body {
-    background: linear-gradient(135deg, #0f172a, #020617);
-}
-
 .main {
-    background: transparent;
+    background-color: #f8fafc;
 }
 
 .app-container {
@@ -26,56 +22,56 @@ body {
 .hero-title {
     font-size: 48px;
     font-weight: 700;
-    color: #e5e7eb;
+    color: #0f172a;
     text-align: center;
     margin-bottom: 20px;
 }
 
 .hero-subtitle {
     font-size: 20px;
-    color: #9ca3af;
+    color: #334155;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
 }
 
-.glass-card {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    border-radius: 16px;
+.card {
+    background: #ffffff;
+    border-radius: 12px;
     padding: 30px;
-    box-shadow: 0px 10px 30px rgba(0,0,0,0.4);
-    margin-bottom: 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+    border: 1px solid #e2e8f0;
 }
 
 .section-title {
     font-size: 24px;
     font-weight: 600;
-    color: #f9fafb;
+    color: #0f172a;
     margin-bottom: 20px;
 }
 
 .feature-item {
-    color: #d1d5db;
+    color: #334155;
     font-size: 16px;
     margin-bottom: 15px;
-    padding-left: 20px;
+    line-height: 1.5;
 }
 
 .highlight-text {
-    color: #38bdf8;
+    color: #2563eb;
     font-weight: 600;
 }
 
 .sidebar .sidebar-content {
-    background: rgba(255, 255, 255, 0.05);
+    background: #ffffff;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # Sidebar Navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.selectbox(
-    "Select Page",
+st.sidebar.title("InsureSense")
+page = st.sidebar.radio(
+    "Navigate to:",
     ["Home", "Cost Estimator", "How It Works", "Insights & Factors", "About the Project"]
 )
 
@@ -86,9 +82,9 @@ if page == "Home":
     st.markdown('<div class="hero-title">InsureSense</div>', unsafe_allow_html=True)
     st.markdown('<div class="hero-subtitle">Intelligent Medical Insurance Cost Estimation</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown(
-        '<p style="color: #d1d5db; font-size: 18px; text-align: center; line-height: 1.6;">'
+        '<p style="color: #334155; font-size: 18px; text-align: center; line-height: 1.6;">'
         'Estimate your medical insurance costs using data-driven insights based on health, '
         'lifestyle, and demographic factors.'
         '</p>',
@@ -97,7 +93,7 @@ if page == "Home":
     st.markdown('</div>', unsafe_allow_html=True)
     
     # Why This Matters Section
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Why This Matters</div>', unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
@@ -132,17 +128,16 @@ if page == "Home":
     st.markdown('</div>', unsafe_allow_html=True)
     
     # CTA Section
-    st.markdown('<div class="glass-card" style="text-align: center;">', unsafe_allow_html=True)
+    st.markdown('<div class="card" style="text-align: center;">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Get Started</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p style="color: #9ca3af; margin-bottom: 30px;">'
+        '<p style="color: #64748b; margin-bottom: 30px;">'
         'Ready to estimate your insurance costs? Our AI-powered system provides instant estimates.'
         '</p>',
         unsafe_allow_html=True
     )
     
     if st.button("Estimate Your Insurance Cost", use_container_width=True, type="primary"):
-        st.sidebar.selectbox("Select Page", ["Cost Estimator"], key="nav_to_estimator")
         st.rerun()
     
     st.markdown('</div>', unsafe_allow_html=True)
@@ -170,7 +165,7 @@ elif page == "Cost Estimator":
     )
     
     # Input Section
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Personal Information</div>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
@@ -183,7 +178,7 @@ elif page == "Cost Estimator":
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Health Metrics</div>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
@@ -200,9 +195,7 @@ elif page == "Cost Estimator":
     bmi = weight / (height_m ** 2)
     
     # Predict Button
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
     predict = st.button("Generate Cost Estimate", use_container_width=True, type="primary")
-    st.markdown('</div>', unsafe_allow_html=True)
     
     # Result Section
     if predict:
@@ -217,21 +210,21 @@ elif page == "Cost Estimator":
         
         prediction = model.predict(input_df)[0]
         
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown('<div class="section-title">Estimated Outcome</div>', unsafe_allow_html=True)
         
         r1, r2 = st.columns(2)
         
         with r1:
             st.markdown("**Body Mass Index**")
-            st.markdown(f'<div style="font-size: 28px; font-weight: 600; color: #facc15;">{bmi:.2f}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="font-size: 28px; font-weight: 600; color: #dc2626;">{bmi:.2f}</div>', unsafe_allow_html=True)
         
         with r2:
             st.markdown("**Estimated Annual Insurance Cost**")
-            st.markdown(f'<div style="font-size: 36px; font-weight: 700; color: #38bdf8;">Rs {prediction:,.2f}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="font-size: 36px; font-weight: 700; color: #2563eb;">Rs {prediction:,.2f}</div>', unsafe_allow_html=True)
         
         st.markdown(
-            '<div style="font-size: 13px; color: #9ca3af; margin-top: 20px;">'
+            '<div style="font-size: 14px; color: #64748b; margin-top: 20px;">'
             'This estimation is generated using a machine learning model trained on historical insurance data. '
             'Actual costs may vary and this is for informational purposes only.'
             '</div>',
@@ -269,14 +262,14 @@ elif page == "How It Works":
     ]
     
     for i, step in enumerate(steps, 1):
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown('<div class="card">', unsafe_allow_html=True)
         st.markdown(f'<div class="section-title">Step {i}: {step["title"]}</div>', unsafe_allow_html=True)
-        st.markdown(f'<p style="color: #d1d5db; font-size: 16px; line-height: 1.6;">{step["description"]}</p>', unsafe_allow_html=True)
+        st.markdown(f'<p style="color: #334155; font-size: 16px; line-height: 1.6;">{step["description"]}</p>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown(
-        '<p style="color: #38bdf8; font-size: 18px; text-align: center; font-weight: 600;">'
+        '<p style="color: #2563eb; font-size: 18px; text-align: center; font-weight: 600;">'
         'The system applies learned patterns from historical data to estimate insurance costs for new profiles.'
         '</p>',
         unsafe_allow_html=True
@@ -291,7 +284,7 @@ elif page == "Insights & Factors":
     st.markdown('<div class="hero-title">Insights & Cost Factors</div>', unsafe_allow_html=True)
     st.markdown('<div class="hero-subtitle">Key factors that influence medical insurance costs</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Primary Cost Factors</div>', unsafe_allow_html=True)
     
     factors = [
@@ -305,17 +298,17 @@ elif page == "Insights & Factors":
     for factor in factors:
         col1, col2 = st.columns([1, 3])
         with col1:
-            st.markdown(f'<div style="color: #38bdf8; font-weight: 600; font-size: 16px;">{factor["factor"]}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="color: #2563eb; font-weight: 600; font-size: 16px;">{factor["factor"]}</div>', unsafe_allow_html=True)
         with col2:
-            st.markdown(f'<div style="color: #d1d5db; font-size: 16px;">{factor["impact"]}</div>', unsafe_allow_html=True)
-        st.markdown('<hr style="border: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">', unsafe_allow_html=True)
+            st.markdown(f'<div style="color: #334155; font-size: 16px;">{factor["impact"]}</div>', unsafe_allow_html=True)
+        st.markdown('<hr style="border: 1px solid #e2e8f0; margin: 15px 0;">', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Key Insight</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p style="color: #facc15; font-size: 18px; text-align: center; font-weight: 600;">'
+        '<p style="color: #dc2626; font-size: 18px; text-align: center; font-weight: 600;">'
         'Smoking status and BMI are typically the strongest contributors to insurance cost variations'
         '</p>',
         unsafe_allow_html=True
@@ -330,10 +323,10 @@ elif page == "About the Project":
     st.markdown('<div class="hero-title">About the Project</div>', unsafe_allow_html=True)
     st.markdown('<div class="hero-subtitle">Technical details and project information</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Project Overview</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p style="color: #d1d5db; font-size: 16px; line-height: 1.6;">'
+        '<p style="color: #334155; font-size: 16px; line-height: 1.6;">'
         'This project demonstrates the application of machine learning in predicting healthcare insurance costs '
         'based on demographic and lifestyle attributes. It serves as an educational tool for understanding '
         'how various factors influence insurance pricing.'
@@ -342,20 +335,20 @@ elif page == "About the Project":
     )
     st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Technology Stack</div>', unsafe_allow_html=True)
     
     tech_stack = ["Python", "Pandas & NumPy", "Scikit-learn", "Streamlit", "Joblib"]
     
     for tech in tech_stack:
-        st.markdown(f'<div style="color: #38bdf8; font-size: 16px; margin-bottom: 10px;">• {tech}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="color: #2563eb; font-size: 16px; margin-bottom: 10px;">• {tech}</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Dataset Information</div>', unsafe_allow_html=True)
     st.markdown(
-        '<p style="color: #d1d5db; font-size: 16px; line-height: 1.6;">'
+        '<p style="color: #334155; font-size: 16px; line-height: 1.6;">'
         'Healthcare Insurance Dataset from Kaggle containing demographic, lifestyle, and cost information '
         'for insurance cost modeling and analysis.'
         '</p>',
@@ -363,7 +356,7 @@ elif page == "About the Project":
     )
     st.markdown('</div>', unsafe_allow_html=True)
     
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Use Cases</div>', unsafe_allow_html=True)
     
     use_cases = [
@@ -374,7 +367,7 @@ elif page == "About the Project":
     ]
     
     for use_case in use_cases:
-        st.markdown(f'<div style="color: #d1d5db; font-size: 16px; margin-bottom: 10px;">• {use_case}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="color: #334155; font-size: 16px; margin-bottom: 10px;">• {use_case}</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
     
