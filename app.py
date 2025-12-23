@@ -16,98 +16,91 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# READABLE + FILLED THEME
+# LIGHT PINK THEME + CSS
 # --------------------------------------------------
 st.markdown("""
 <style>
+/* Whole page background */
 body {
-    background-color: #f9fafb;
+    background-color: #ffe0eb; /* soft light pink */
+    color: #333333; /* dark gray text */
 }
 
-/* Main content width control */
+/* Page container padding */
 .block-container {
     max-width: 1000px;
     padding-top: 3rem;
     padding-bottom: 3rem;
 }
 
-/* Headings */
-h1 {
-    font-size: 42px;
-    color: #0f172a;
-    margin-bottom: 0.5rem;
+/* Headings - remove default Streamlit box */
+h1, h2, h3 {
+    background-color: #ffe0eb !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0.5rem 0 0.5rem 0;
+    text-align: center;
+    color: #c2185b;
 }
 
-h2 {
-    font-size: 30px;
-    color: #0f172a;
-    margin-top: 2.5rem;
-}
-
-h3 {
-    font-size: 22px;
-    color: #1e293b;
-}
-
-/* Text */
-p, li {
-    font-size: 17px;
-    color: #334155;
-    line-height: 1.8;
+/* Section cards */
+.section {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: none;
 }
 
 /* Buttons */
 .stButton>button {
+    background-color: #ff66b2; /* vibrant pink */
+    color: white;
     font-size: 16px;
     padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    border: none;
+    transition: background 0.3s;
+}
+.stButton>button:hover {
+    background-color: #e65599;
+}
+
+/* Metrics / output boxes */
+.stMetric {
+    background-color: #ffe0eb;
+    color: #333333;
+    border-radius: 8px;
+    padding: 1rem;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# SESSION STATE
+# TOP NAVIGATION
 # --------------------------------------------------
-if "page" not in st.session_state:
-    st.session_state.page = "Home"
-
-# --------------------------------------------------
-# SIDEBAR NAVIGATION
-# --------------------------------------------------
-st.sidebar.title("InsureSense")
-
-page = st.sidebar.radio(
-    "Navigation",
-    [
-        "Home",
-        "Cost Estimator",
-        "How It Works",
-        "Insights & Factors",
-        "About the Project"
-    ],
-    index=[
-        "Home",
-        "Cost Estimator",
-        "How It Works",
-        "Insights & Factors",
-        "About the Project"
-    ].index(st.session_state.page)
-)
-
-st.session_state.page = page
+tabs = ["Home", "Cost Estimator", "How It Works", "Insights & Factors", "About the Project"]
+selected_tab = st.tabs(tabs)
 
 # --------------------------------------------------
 # HOME PAGE
 # --------------------------------------------------
-if page == "Home":
-    st.title("InsureSense")
-    st.subheader("""Medical Insurance Cost Estimation using Machine Learning
-    
-    """)
+with selected_tab[0]:
+    st.markdown('<div class="section">', unsafe_allow_html=True)
+
+    st.markdown(
+        """
+        <h1>InsureSense</h1>
+        <h3>Medical Insurance Cost Estimation using Machine Learning</h3>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.markdown("""
     Healthcare insurance costs are influenced by a combination of personal characteristics,
     health metrics, and lifestyle habits. Accurately estimating these costs can be challenging
     for individuals planning their healthcare expenses.
+
     InsureSense uses a machine learning model trained on real-world healthcare insurance data
     to provide an estimated annual insurance cost based on user-provided inputs.
     """)
@@ -121,13 +114,14 @@ if page == "Home":
 
     st.markdown("### Get Started")
     if st.button("Estimate Your Insurance Cost"):
-        st.session_state.page = "Cost Estimator"
-        st.rerun()
+        st.experimental_rerun()  # Go to Cost Estimator tab
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
 # COST ESTIMATOR PAGE
 # --------------------------------------------------
-elif page == "Cost Estimator":
+with selected_tab[1]:
+    st.markdown('<div class="section">', unsafe_allow_html=True)
     st.header("Medical Insurance Cost Estimator")
     st.markdown("""
     Enter your personal, health, and lifestyle details below. The system will process
@@ -135,7 +129,6 @@ elif page == "Cost Estimator":
     """)
 
     st.markdown("### User Information")
-
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -183,11 +176,13 @@ elif page == "Cost Estimator":
             st.metric("Estimated Annual Cost", f"Rs {prediction:,.2f}")
 
         st.caption("This estimate is generated using a machine learning model and is for informational purposes only.")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
 # HOW IT WORKS PAGE
 # --------------------------------------------------
-elif page == "How It Works":
+with selected_tab[2]:
+    st.markdown('<div class="section">', unsafe_allow_html=True)
     st.header("How the System Works")
 
     st.markdown("""
@@ -206,11 +201,13 @@ elif page == "How It Works":
     **Step 4: Prediction**  
     User inputs are passed to the trained model to estimate the insurance cost.
     """)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
-# INSIGHTS PAGE
+# INSIGHTS & FACTORS PAGE
 # --------------------------------------------------
-elif page == "Insights & Factors":
+with selected_tab[3]:
+    st.markdown('<div class="section">', unsafe_allow_html=True)
     st.header("Key Factors Affecting Insurance Cost")
 
     st.markdown("""
@@ -227,11 +224,13 @@ elif page == "Insights & Factors":
     """)
 
     st.markdown("**Most influential factors:** Smoking status and BMI")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
 # ABOUT PAGE
 # --------------------------------------------------
-elif page == "About the Project":
+with selected_tab[4]:
+    st.markdown('<div class="section">', unsafe_allow_html=True)
     st.header("About the Project")
 
     st.markdown("""
@@ -261,3 +260,4 @@ elif page == "About the Project":
     - Financial planning and cost estimation  
     - Healthcare analytics use cases  
     """)
+    st.markdown('</div>', unsafe_allow_html=True)
