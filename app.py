@@ -22,7 +22,7 @@ st.markdown("""
 <style>
 /* Background gradient for the whole page */
 body {
-    background: linear-gradient(135deg, #e0f2f1, #ffffff); /* light teal → white */
+    background: linear-gradient(135deg, #e0f7fa, #ffffff);
 }
 
 /* Content width */
@@ -35,13 +35,13 @@ body {
 /* Headings */
 h1 {
     font-size: 44px;
-    color: #0f4c75;  /* strong blue */
+    color: #0f4c75;  /* Strong blue */
     margin-bottom: 0.5rem;
 }
 
 h2 {
     font-size: 32px;
-    color: #1b262c;  /* dark slate */
+    color: #1b262c;  /* Dark slate */
     margin-top: 2.5rem;
 }
 
@@ -53,13 +53,13 @@ h3 {
 /* Text */
 p, li {
     font-size: 17px;
-    color: #162938;  /* soft dark for readability */
+    color: #162938;  /* Softer dark for readability */
     line-height: 1.8;
 }
 
 /* Buttons */
 .stButton>button {
-    background-color: #3282b8;  /* soft blue */
+    background-color: #3282b8;  /* Soft blue */
     color: white;
     font-size: 16px;
     padding: 0.6rem 1.2rem;
@@ -80,7 +80,7 @@ p, li {
 
 /* Section separation */
 .section {
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.7);
     padding: 1.5rem;
     border-radius: 8px;
     margin-bottom: 2rem;
