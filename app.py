@@ -100,13 +100,14 @@ st.session_state.page = page
 # --------------------------------------------------
 if page == "Home":
     st.title("InsureSense")
-    st.subheader("Medical Insurance Cost Estimation using Machine Learning")
+    st.subheader("""Medical Insurance Cost Estimation using Machine Learning
+    
+    """)
 
     st.markdown("""
     Healthcare insurance costs are influenced by a combination of personal characteristics,
     health metrics, and lifestyle habits. Accurately estimating these costs can be challenging
     for individuals planning their healthcare expenses.
-
     InsureSense uses a machine learning model trained on real-world healthcare insurance data
     to provide an estimated annual insurance cost based on user-provided inputs.
     """)
