@@ -43,13 +43,13 @@ h1 {
     color: #c2185b;
 }
 
-/* Other headings right aligned */
+/* Other headings left aligned */
 h2, h3 {
     background-color: #ffffff !important;
     box-shadow: none !important;
     padding: 0 !important;
     margin: 0.5rem 0 0.5rem 0;
-    text-align: right;
+    text-align: left;
     color: #c2185b;
 }
 
@@ -163,7 +163,7 @@ with selected_tab[1]:
 
     with col3:
         smoker = st.selectbox("Smoking Status", ["yes", "no"])
-        children = st.number_input("Number of Dependents", 0, 10, 0)
+        children = st.number_input("Number of childrens", 0, 10, 0)
 
     region = st.selectbox(
         "Residential Region",
