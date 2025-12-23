@@ -16,7 +16,7 @@ st.markdown("""
 <style>
 /* Whole page background */
 body, .main, .block-container {
-    background-color: #ffe0eb; /* soft light pink */
+    background-color: #fff2fc; /* soft light pink */
     color: #333333;
 }
 
