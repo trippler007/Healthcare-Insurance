@@ -16,7 +16,7 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# CUSTOM CSS FOR THEME, NAVIGATION & LAYOUT
+# CUSTOM CSS FOR THEME & LAYOUT
 # --------------------------------------------------
 st.markdown("""
 <style>
@@ -29,15 +29,15 @@ body {
 /* Page container padding */
 .block-container {
     max-width: 1000px;
-    padding-top: 1rem; /* reduced top padding */
-    padding-bottom: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 /* Headings without colored background */
 h1, h2, h3 {
     background-color: #ffffff !important;
     box-shadow: none !important;
-    padding: 0.2rem 0 !important;
+    padding: 0 !important;
     margin: 0.5rem 0 0.5rem 0;
     text-align: center;
     color: #c2185b;
@@ -75,20 +75,20 @@ h1, h2, h3 {
 }
 
 /* Right align tabs */
-.css-1v3fvcr.e16nr0p31 { 
+.css-1v3fvcr.e16nr0p31 { /* Streamlit tabs container */
     justify-content: flex-end;
     margin-bottom: 0.5rem;
 }
 
 /* Reduce gap between navigation tabs and content */
-.css-12w0qpk { 
-    padding-top: 0.5rem; 
+.css-12w0qpk { /* main container */
+    padding-top: 1rem;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# TOP NAVIGATION TABS
+# TOP NAVIGATION
 # --------------------------------------------------
 tabs = ["Home", "Cost Estimator", "How It Works", "Insights & Factors", "About the Project"]
 selected_tab = st.tabs(tabs)
@@ -99,27 +99,34 @@ selected_tab = st.tabs(tabs)
 with selected_tab[0]:
     st.markdown('<div class="section">', unsafe_allow_html=True)
 
-    st.markdown("<h1>InsureSense</h1>", unsafe_allow_html=True)
-    st.markdown("<h3>Medical Insurance Cost Estimation using Machine Learning</h3>", unsafe_allow_html=True)
+    st.markdown(
+        """
+        <h1>InsureSense</h1>
+        <h3>Medical Insurance Cost Estimation using Machine Learning</h3>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.markdown("""
-    Planning healthcare expenses can be confusing. Insurance costs depend on age, lifestyle, health metrics, and location.
-    Many individuals either overestimate or underestimate their insurance expenses due to lack of clear guidance.
+    Planning healthcare expenses can be challenging. The annual cost of medical insurance
+    depends on age, lifestyle habits, health metrics, and location. Many individuals
+    underestimate or overestimate their insurance expenses due to lack of clear insights.
 
-    InsureSense uses a trained machine learning model to predict your annual insurance cost
-    based on your personal, health, and lifestyle data. This helps you make informed decisions and plan finances efficiently.
+    InsureSense uses a trained machine learning model to estimate your annual insurance cost
+    based on your personal, health, and lifestyle data. This provides clarity and helps
+    you plan finances better.
     """)
 
-    st.markdown("## Why This Matters")
+    st.markdown("## Why this matters")
     st.markdown("""
     - Healthcare costs are continuously rising globally.  
     - Lifestyle choices like smoking and body mass index heavily influence insurance pricing.  
-    - Data-driven cost estimates allow better financial and health planning.  
+    - Data-driven estimates allow better financial and health planning.  
     """)
 
     st.markdown("### Get Started")
     if st.button("Estimate Your Insurance Cost"):
-        st.experimental_rerun()
+        st.experimental_rerun()  # Go to Cost Estimator tab
     st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
@@ -129,7 +136,8 @@ with selected_tab[1]:
     st.markdown('<div class="section">', unsafe_allow_html=True)
     st.header("Medical Insurance Cost Estimator")
     st.markdown("""
-    Enter your personal, health, and lifestyle details below. The system will generate an estimated annual insurance cost.
+    Fill in your details below. Our system will process this information
+    and provide an estimated annual insurance cost based on real-world data.
     """)
 
     st.markdown("### Your Details")
@@ -191,16 +199,18 @@ with selected_tab[2]:
 
     st.markdown("""
     **Step 1: Data Collection**  
-    The model is trained on a healthcare insurance dataset including demographic, lifestyle, and regional information with historical charges.
+    The model is trained on a comprehensive healthcare insurance dataset including
+    demographic, lifestyle, and regional information along with historical charges.
 
     **Step 2: Feature Processing**  
-    Categorical features like gender, smoking status, and region are encoded. BMI is calculated from height and weight.
+    Categorical features like gender, smoking status, and region are encoded.
+    Body Mass Index (BMI) is calculated from height and weight.
 
     **Step 3: Model Training**  
-    A supervised regression model learns patterns from historical insurance data.
+    A supervised regression model learns patterns from historical data to predict insurance cost.
 
     **Step 4: Prediction**  
-    User inputs are passed to the trained model to generate an estimated insurance cost.
+    User inputs are passed to the trained model to generate an estimated cost.
     """)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -216,8 +226,8 @@ with selected_tab[3]:
     the estimated values more effectively.
 
     - **Age:** Costs increase with age due to higher health risks.  
-    - **Smoking Status:** Smokers typically face higher charges.  
-    - **Body Mass Index (BMI):** Higher BMI increases healthcare risk.  
+    - **Smoking Status:** Smokers typically face much higher insurance charges.  
+    - **Body Mass Index (BMI):** Higher BMI often leads to increased healthcare risk.  
     - **Number of Dependents:** More dependents increase total coverage cost.  
     - **Geographic Region:** Insurance pricing varies by region.  
     """)
@@ -235,7 +245,7 @@ with selected_tab[4]:
     st.markdown("""
     InsureSense demonstrates practical application of machine learning for
     predicting healthcare insurance costs based on demographics and lifestyle.
-    This app is designed for educational, analytical, and portfolio purposes.
+    The app is designed for educational, analytical, and portfolio purposes.
     """)
 
     st.markdown("### Tech Stack")
