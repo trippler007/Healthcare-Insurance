@@ -124,8 +124,15 @@ st.session_state.page = page
 # --------------------------------------------------
 if page == "Home":
     st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.title("InsureSense")
-    st.subheader("Medical Insurance Cost Estimation using Machine Learning")
+    st.markdown(
+        """
+        <div style="text-align: center;">
+            <h1>InsureSense</h1>
+            <h3>Medical Insurance Cost Estimation using Machine Learning</h3>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.markdown("""
     Healthcare insurance costs are influenced by a combination of personal characteristics,
