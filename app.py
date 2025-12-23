@@ -173,7 +173,7 @@ elif page == "Cost Estimator":
 
     with col3:
         smoker = st.selectbox("Smoking Status", ["yes", "no"])
-        children = st.number_input("Number of Dependents", 0, 10, 0)
+        children = st.number_input("Number of children", 0, 10, 0)
 
     region = st.selectbox(
         "Residential Region",
