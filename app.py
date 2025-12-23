@@ -20,42 +20,44 @@ model = joblib.load("model.joblib")
 # --------------------------------------------------
 st.markdown("""
 <style>
-/* Full page background including container */
-body, .main, .block-container {
-    background-color: #ffd6e8; /* larger pink fill */
-    color: #333333; 
+/* Whole page background */
+body {
+    background-color: #ffe6f0; /* soft light pink */
+    color: #333333; /* dark gray text */
 }
 
-/* Sidebar */
+/* Sidebar color */
 [aria-label="Sidebar"] {
-    background-color: #ffb3d1; 
+    background-color: #ffd6e8;
 }
 
-/* Headings (remove default Streamlit box) */
-h1, h2, h3 {
-    background: none !important;
-    padding: 0 !important;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    color: #c2185b;
-    text-align: center;
+/* Page container */
+.block-container {
+    max-width: 1000px;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 }
+
+/* Headings */
+h1 { color: #c2185b; text-align: center; }
+h2 { color: #c2185b; }
+h3 { color: #c2185b; }
 
 /* Section cards */
 .section {
     background-color: #ffffff;
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 12px;
     margin-bottom: 2rem;
-    box-shadow: 0px 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
 }
 
 /* Buttons */
 .stButton>button {
-    background-color: #ff66b2; 
+    background-color: #ff66b2; /* vibrant pink */
     color: white;
     font-size: 16px;
-    padding: 0.7rem 1.5rem;
+    padding: 0.6rem 1.2rem;
     border-radius: 8px;
     border: none;
     transition: background 0.3s;
@@ -73,7 +75,6 @@ h1, h2, h3 {
 }
 </style>
 """, unsafe_allow_html=True)
-
 
 # --------------------------------------------------
 # SESSION STATE
