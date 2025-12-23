@@ -16,141 +16,125 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# CUSTOM CSS FOR THEME & LAYOUT
+# READABLE + FILLED THEME
 # --------------------------------------------------
 st.markdown("""
 <style>
-/* Whole page background */
 body {
-    background-color: #ffe6f0; /* soft pink background */
-    color: #333333;
+    background-color: #f9fafb;
 }
 
-/* Page container padding */
+/* Main content width control */
 .block-container {
     max-width: 1000px;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 }
 
-/* Main heading (h1) center aligned */
+/* Headings */
 h1 {
-    background-color: #ffffff !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0.5rem 0 1rem 0;
-    text-align: center;
-    color: #c2185b;
+    font-size: 42px;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
 }
 
-/* Other headings left aligned */
-h2, h3 {
-    background-color: #ffffff !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0.5rem 0 0.5rem 0;
-    text-align: left;
-    color: #c2185b;
+h2 {
+    font-size: 30px;
+    color: #0f172a;
+    margin-top: 2.5rem;
 }
 
-/* Section cards */
-.section {
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    margin-bottom: 2rem;
-    box-shadow: none;
+h3 {
+    font-size: 22px;
+    color: #1e293b;
+}
+
+/* Text */
+p, li {
+    font-size: 17px;
+    color: #334155;
+    line-height: 1.8;
 }
 
 /* Buttons */
 .stButton>button {
-    background-color: #ff66b2; /* vibrant pink */
-    color: white;
     font-size: 16px;
     padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    border: none;
-    transition: background 0.3s;
-}
-.stButton>button:hover {
-    background-color: #e65599;
-}
-
-/* Metrics / output boxes */
-.stMetric {
-    background-color: #ffe6f0;
-    color: #333333;
-    border-radius: 8px;
-    padding: 1rem;
-}
-
-/* Right align tabs */
-.css-1v3fvcr.e16nr0p31 { 
-    justify-content: flex-end;
-    margin-bottom: 0.5rem;
-}
-
-/* Reduce gap between navigation tabs and content */
-.css-12w0qpk { 
-    padding-top: 1rem;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# TOP NAVIGATION
+# SESSION STATE
 # --------------------------------------------------
-tabs = ["Home", "Cost Estimator", "How It Works", "Insights & Factors", "About the Project"]
-selected_tab = st.tabs(tabs)
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
+
+# --------------------------------------------------
+# SIDEBAR NAVIGATION
+# --------------------------------------------------
+st.sidebar.title("InsureSense")
+
+page = st.sidebar.radio(
+    "Navigation",
+    [
+        "Home",
+        "Cost Estimator",
+        "How It Works",
+        "Insights & Factors",
+        "About the Project"
+    ],
+    index=[
+        "Home",
+        "Cost Estimator",
+        "How It Works",
+        "Insights & Factors",
+        "About the Project"
+    ].index(st.session_state.page)
+)
+
+st.session_state.page = page
 
 # --------------------------------------------------
 # HOME PAGE
 # --------------------------------------------------
-with selected_tab[0]:
-    st.markdown('<div class="section">', unsafe_allow_html=True)
-
-    st.markdown(
-        """
-        <h1>InsureSense</h1>
-        <h3>Medical Insurance Cost Estimation using Machine Learning</h3>
-        """,
-        unsafe_allow_html=True
-    )
+if page == "Home":
+    st.title("InsureSense")
+    st.subheader("Medical Insurance Cost Estimation using Machine Learning")
 
     st.markdown("""
-    Planning healthcare expenses can be challenging. The annual cost of medical insurance
-    depends on age, lifestyle habits, health metrics, and location. Many individuals
-    underestimate or overestimate their insurance expenses due to lack of clear insights.
+    Healthcare insurance costs are influenced by a combination of personal characteristics,
+    health metrics, and lifestyle habits. Accurately estimating these costs can be challenging
+    for individuals planning their healthcare expenses.
 
-    InsureSense uses a trained machine learning model to estimate your annual insurance cost
-    based on your personal, health, and lifestyle data. This provides clarity and helps
-    you plan finances better.
+    InsureSense uses a machine learning model trained on real-world healthcare insurance data
+    to provide an estimated annual insurance cost based on user-provided inputs.
     """)
 
     st.markdown("## Why this matters")
     st.markdown("""
-    - Healthcare costs are continuously rising globally.  
-    - Lifestyle choices like smoking and body mass index heavily influence insurance pricing.  
-    - Data-driven estimates allow better financial and health planning.  
+    - Healthcare costs continue to rise globally  
+    - Lifestyle choices such as smoking and body mass index strongly influence insurance pricing  
+    - Data-driven cost estimates support informed financial and healthcare planning  
     """)
 
     st.markdown("### Get Started")
     if st.button("Estimate Your Insurance Cost"):
-        st.experimental_rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.session_state.page = "Cost Estimator"
+        st.rerun()
 
 # --------------------------------------------------
 # COST ESTIMATOR PAGE
 # --------------------------------------------------
-with selected_tab[1]:
-    st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.markdown("<h1>Medical Insurance Cost Estimator</h1>", unsafe_allow_html=True)
+elif page == "Cost Estimator":
+    st.header("Medical Insurance Cost Estimator")
     st.markdown("""
-    Fill in your details below. Our system will process this information
-    and provide an estimated annual insurance cost based on real-world data.
+    Enter your personal, health, and lifestyle details below. The system will process
+    this information and generate an estimated annual insurance cost.
     """)
 
-    st.markdown("### Your Details")
+    st.markdown("### User Information")
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -163,7 +147,7 @@ with selected_tab[1]:
 
     with col3:
         smoker = st.selectbox("Smoking Status", ["yes", "no"])
-        children = st.number_input("Number of childrens", 0, 10, 0)
+        children = st.number_input("Number of Dependents", 0, 10, 0)
 
     region = st.selectbox(
         "Residential Region",
@@ -198,71 +182,67 @@ with selected_tab[1]:
             st.metric("Estimated Annual Cost", f"Rs {prediction:,.2f}")
 
         st.caption("This estimate is generated using a machine learning model and is for informational purposes only.")
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
 # HOW IT WORKS PAGE
 # --------------------------------------------------
-with selected_tab[2]:
-    st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.markdown("<h1>How the System Works</h1>", unsafe_allow_html=True)
+elif page == "How It Works":
+    st.header("How the System Works")
 
     st.markdown("""
     **Step 1: Data Collection**  
-    The model is trained on a comprehensive healthcare insurance dataset including
-    demographic, lifestyle, and regional information along with historical charges.
+    The model is trained on a healthcare insurance dataset containing demographic,
+    lifestyle, and regional information along with historical insurance charges.
 
     **Step 2: Feature Processing**  
-    Categorical features like gender, smoking status, and region are encoded.
+    Categorical features such as gender, smoking status, and region are encoded.
     Body Mass Index (BMI) is calculated from height and weight.
 
     **Step 3: Model Training**  
-    A supervised regression model learns patterns from historical data to predict insurance cost.
+    A supervised machine learning regression model learns patterns from historical
+    insurance data.
 
     **Step 4: Prediction**  
-    User inputs are passed to the trained model to generate an estimated cost.
+    User inputs are passed to the trained model to estimate the insurance cost.
     """)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
-# INSIGHTS & FACTORS PAGE
+# INSIGHTS PAGE
 # --------------------------------------------------
-with selected_tab[3]:
-    st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.markdown("<h1>Key Factors Affecting Insurance Cost</h1>", unsafe_allow_html=True)
+elif page == "Insights & Factors":
+    st.header("Key Factors Affecting Insurance Cost")
 
     st.markdown("""
-    Understanding the factors influencing insurance cost helps users interpret
-    the estimated values more effectively.
-
-    - **Age:** Costs increase with age due to higher health risks.  
-    - **Smoking Status:** Smokers typically face much higher insurance charges.  
-    - **Body Mass Index (BMI):** Higher BMI often leads to increased healthcare risk.  
-    - **Number of Dependents:** More dependents increase total coverage cost.  
-    - **Geographic Region:** Insurance pricing varies by region.  
+    Several factors influence healthcare insurance pricing. Understanding these
+    factors helps users interpret the estimated cost more effectively.
     """)
 
-    st.markdown("### Most influential factors")
-    st.markdown("Smoking and BMI")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("""
+    - **Age:** Insurance costs generally increase as age increases  
+    - **Smoking Status:** Smoking has a significant impact on insurance charges  
+    - **Body Mass Index (BMI):** Higher BMI often correlates with increased healthcare risk  
+    - **Number of Dependents:** Additional dependents can raise total coverage cost  
+    - **Geographic Region:** Insurance pricing varies across different regions  
+    """)
+
+    st.markdown("**Most influential factors:** Smoking status and BMI")
 
 # --------------------------------------------------
 # ABOUT PAGE
 # --------------------------------------------------
-with selected_tab[4]:
-    st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.markdown("<h1>About the Project</h1>", unsafe_allow_html=True)
+elif page == "About the Project":
+    st.header("About the Project")
 
     st.markdown("""
-    InsureSense demonstrates practical application of machine learning for
-    predicting healthcare insurance costs based on demographics and lifestyle.
-    The app is designed for educational, analytical, and portfolio purposes.
+    This project demonstrates the practical application of machine learning techniques
+    in predicting healthcare insurance costs based on demographic and lifestyle attributes.
+    It is designed for educational, analytical, and portfolio purposes.
     """)
 
     st.markdown("### Tech Stack")
     st.markdown("""
     - Python  
-    - Pandas & NumPy  
+    - Pandas and NumPy  
     - Scikit-learn  
     - Streamlit  
     - Joblib  
@@ -276,8 +256,7 @@ with selected_tab[4]:
 
     st.markdown("### Use Case")
     st.markdown("""
-    - Educational demonstrations of ML applications  
+    - Educational demonstrations of machine learning  
     - Financial planning and cost estimation  
-    - Healthcare analytics and insights  
+    - Healthcare analytics use cases  
     """)
-    st.markdown('</div>', unsafe_allow_html=True)
