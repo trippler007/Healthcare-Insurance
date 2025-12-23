@@ -16,16 +16,22 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# COLOR & THEME ENHANCEMENT
+# LIGHT PINK THEME + CSS
 # --------------------------------------------------
 st.markdown("""
 <style>
-/* Background gradient for the whole page */
+/* Whole page background */
 body {
-    background: linear-gradient(135deg, #e0f7fa, #ffffff);
+    background-color: #ffe6f0; /* soft light pink */
+    color: #333333; /* dark gray text */
 }
 
-/* Content width */
+/* Sidebar color */
+[aria-label="Sidebar"] {
+    background-color: #ffd6e8;
+}
+
+/* Page container */
 .block-container {
     max-width: 1000px;
     padding-top: 3rem;
@@ -33,57 +39,39 @@ body {
 }
 
 /* Headings */
-h1 {
-    font-size: 44px;
-    color: #0f4c75;  /* Strong blue */
-    margin-bottom: 0.5rem;
-}
+h1 { color: #c2185b; text-align: center; }
+h2 { color: #c2185b; }
+h3 { color: #c2185b; }
 
-h2 {
-    font-size: 32px;
-    color: #1b262c;  /* Dark slate */
-    margin-top: 2.5rem;
-}
-
-h3 {
-    font-size: 22px;
-    color: #1b262c;
-}
-
-/* Text */
-p, li {
-    font-size: 17px;
-    color: #162938;  /* Softer dark for readability */
-    line-height: 1.8;
+/* Section cards */
+.section {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
 }
 
 /* Buttons */
 .stButton>button {
-    background-color: #3282b8;  /* Soft blue */
+    background-color: #ff66b2; /* vibrant pink */
     color: white;
     font-size: 16px;
     padding: 0.6rem 1.2rem;
-    border-radius: 6px;
+    border-radius: 8px;
     border: none;
     transition: background 0.3s;
 }
 .stButton>button:hover {
-    background-color: #0f4c75;
+    background-color: #e65599;
 }
 
-/* Metrics boxes */
+/* Metrics / output boxes */
 .stMetric {
-    background-color: #f0f4f8;
-    border-radius: 6px;
-    padding: 1rem;
-}
-
-/* Section separation */
-.section {
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 1.5rem;
+    background-color: #ffe6f0;
+    color: #333333;
     border-radius: 8px;
-    margin-bottom: 2rem;
+    padding: 1rem;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -98,7 +86,6 @@ if "page" not in st.session_state:
 # SIDEBAR NAVIGATION
 # --------------------------------------------------
 st.sidebar.title("InsureSense")
-
 page = st.sidebar.radio(
     "Navigation",
     [
@@ -116,7 +103,6 @@ page = st.sidebar.radio(
         "About the Project"
     ].index(st.session_state.page)
 )
-
 st.session_state.page = page
 
 # --------------------------------------------------
@@ -124,6 +110,8 @@ st.session_state.page = page
 # --------------------------------------------------
 if page == "Home":
     st.markdown('<div class="section">', unsafe_allow_html=True)
+
+    # Centered title & subtitle
     st.markdown(
         """
         <div style="text-align: center;">
