@@ -16,15 +16,16 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# READABLE + FILLED THEME
+# COLOR & THEME ENHANCEMENT
 # --------------------------------------------------
 st.markdown("""
 <style>
+/* Background gradient for the whole page */
 body {
-    background-color: #f9fafb;
+    background: linear-gradient(135deg, #e0f7fa, #ffffff);
 }
 
-/* Main content width control */
+/* Content width */
 .block-container {
     max-width: 1000px;
     padding-top: 3rem;
@@ -33,33 +34,56 @@ body {
 
 /* Headings */
 h1 {
-    font-size: 42px;
-    color: #0f172a;
+    font-size: 44px;
+    color: #0f4c75;  /* Strong blue */
     margin-bottom: 0.5rem;
 }
 
 h2 {
-    font-size: 30px;
-    color: #0f172a;
+    font-size: 32px;
+    color: #1b262c;  /* Dark slate */
     margin-top: 2.5rem;
 }
 
 h3 {
     font-size: 22px;
-    color: #1e293b;
+    color: #1b262c;
 }
 
 /* Text */
 p, li {
     font-size: 17px;
-    color: #334155;
+    color: #162938;  /* Softer dark for readability */
     line-height: 1.8;
 }
 
 /* Buttons */
 .stButton>button {
+    background-color: #3282b8;  /* Soft blue */
+    color: white;
     font-size: 16px;
     padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    border: none;
+    transition: background 0.3s;
+}
+.stButton>button:hover {
+    background-color: #0f4c75;
+}
+
+/* Metrics boxes */
+.stMetric {
+    background-color: #f0f4f8;
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+/* Section separation */
+.section {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -99,6 +123,7 @@ st.session_state.page = page
 # HOME PAGE
 # --------------------------------------------------
 if page == "Home":
+    st.markdown('<div class="section">', unsafe_allow_html=True)
     st.title("InsureSense")
     st.subheader("Medical Insurance Cost Estimation using Machine Learning")
 
@@ -122,11 +147,13 @@ if page == "Home":
     if st.button("Estimate Your Insurance Cost"):
         st.session_state.page = "Cost Estimator"
         st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
 # COST ESTIMATOR PAGE
 # --------------------------------------------------
 elif page == "Cost Estimator":
+    st.markdown('<div class="section">', unsafe_allow_html=True)
     st.header("Medical Insurance Cost Estimator")
     st.markdown("""
     Enter your personal, health, and lifestyle details below. The system will process
@@ -134,7 +161,6 @@ elif page == "Cost Estimator":
     """)
 
     st.markdown("### User Information")
-
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -182,11 +208,13 @@ elif page == "Cost Estimator":
             st.metric("Estimated Annual Cost", f"Rs {prediction:,.2f}")
 
         st.caption("This estimate is generated using a machine learning model and is for informational purposes only.")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
 # HOW IT WORKS PAGE
 # --------------------------------------------------
 elif page == "How It Works":
+    st.markdown('<div class="section">', unsafe_allow_html=True)
     st.header("How the System Works")
 
     st.markdown("""
@@ -205,11 +233,13 @@ elif page == "How It Works":
     **Step 4: Prediction**  
     User inputs are passed to the trained model to estimate the insurance cost.
     """)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
 # INSIGHTS PAGE
 # --------------------------------------------------
 elif page == "Insights & Factors":
+    st.markdown('<div class="section">', unsafe_allow_html=True)
     st.header("Key Factors Affecting Insurance Cost")
 
     st.markdown("""
@@ -226,11 +256,13 @@ elif page == "Insights & Factors":
     """)
 
     st.markdown("**Most influential factors:** Smoking status and BMI")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
 # ABOUT PAGE
 # --------------------------------------------------
 elif page == "About the Project":
+    st.markdown('<div class="section">', unsafe_allow_html=True)
     st.header("About the Project")
 
     st.markdown("""
@@ -260,3 +292,4 @@ elif page == "About the Project":
     - Financial planning and cost estimation  
     - Healthcare analytics use cases  
     """)
+    st.markdown('</div>', unsafe_allow_html=True)
