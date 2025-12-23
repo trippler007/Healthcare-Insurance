@@ -33,13 +33,23 @@ body {
     padding-bottom: 2rem;
 }
 
-/* Headings without colored background */
-h1, h2, h3 {
+/* Main heading (h1) center aligned */
+h1 {
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0.5rem 0 1rem 0;
+    text-align: center;
+    color: #c2185b;
+}
+
+/* Other headings right aligned */
+h2, h3 {
     background-color: #ffffff !important;
     box-shadow: none !important;
     padding: 0 !important;
     margin: 0.5rem 0 0.5rem 0;
-    text-align: center;
+    text-align: right;
     color: #c2185b;
 }
 
@@ -75,13 +85,13 @@ h1, h2, h3 {
 }
 
 /* Right align tabs */
-.css-1v3fvcr.e16nr0p31 { /* Streamlit tabs container */
+.css-1v3fvcr.e16nr0p31 { 
     justify-content: flex-end;
     margin-bottom: 0.5rem;
 }
 
 /* Reduce gap between navigation tabs and content */
-.css-12w0qpk { /* main container */
+.css-12w0qpk { 
     padding-top: 1rem;
 }
 </style>
@@ -126,7 +136,7 @@ with selected_tab[0]:
 
     st.markdown("### Get Started")
     if st.button("Estimate Your Insurance Cost"):
-        st.experimental_rerun()  # Go to Cost Estimator tab
+        st.experimental_rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
@@ -134,7 +144,7 @@ with selected_tab[0]:
 # --------------------------------------------------
 with selected_tab[1]:
     st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.header("Medical Insurance Cost Estimator")
+    st.markdown("<h1>Medical Insurance Cost Estimator</h1>", unsafe_allow_html=True)
     st.markdown("""
     Fill in your details below. Our system will process this information
     and provide an estimated annual insurance cost based on real-world data.
@@ -195,7 +205,7 @@ with selected_tab[1]:
 # --------------------------------------------------
 with selected_tab[2]:
     st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.header("How the System Works")
+    st.markdown("<h1>How the System Works</h1>", unsafe_allow_html=True)
 
     st.markdown("""
     **Step 1: Data Collection**  
@@ -219,7 +229,7 @@ with selected_tab[2]:
 # --------------------------------------------------
 with selected_tab[3]:
     st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.header("Key Factors Affecting Insurance Cost")
+    st.markdown("<h1>Key Factors Affecting Insurance Cost</h1>", unsafe_allow_html=True)
 
     st.markdown("""
     Understanding the factors influencing insurance cost helps users interpret
@@ -232,7 +242,8 @@ with selected_tab[3]:
     - **Geographic Region:** Insurance pricing varies by region.  
     """)
 
-    st.markdown("**Most influential factors:** Smoking and BMI")
+    st.markdown("### Most influential factors")
+    st.markdown("Smoking and BMI")
     st.markdown('</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
@@ -240,7 +251,7 @@ with selected_tab[3]:
 # --------------------------------------------------
 with selected_tab[4]:
     st.markdown('<div class="section">', unsafe_allow_html=True)
-    st.header("About the Project")
+    st.markdown("<h1>About the Project</h1>", unsafe_allow_html=True)
 
     st.markdown("""
     InsureSense demonstrates practical application of machine learning for
