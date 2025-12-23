@@ -16,15 +16,16 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# DARK THEME + CSS
+# COLOR & THEME ENHANCEMENT
 # --------------------------------------------------
 st.markdown("""
 <style>
+/* Background gradient for the whole page */
 body {
-    background-color: #1e1e2f; /* dark indigo background */
-    color: #d1d5db; /* soft gray text */
+    background: linear-gradient(135deg, #e0f7fa, #ffffff);
 }
 
+/* Content width */
 .block-container {
     max-width: 1000px;
     padding-top: 3rem;
@@ -32,37 +33,57 @@ body {
 }
 
 /* Headings */
-h1 { color: #f5f5f5; text-align: center; }
-h2 { color: #f5f5f5; }
-h3 { color: #f5f5f5; }
+h1 {
+    font-size: 44px;
+    color: #0f4c75;  /* Strong blue */
+    margin-bottom: 0.5rem;
+}
 
-/* Section cards */
-.section {
-    background-color: rgba(30, 30, 47, 0.85);
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
+h2 {
+    font-size: 32px;
+    color: #1b262c;  /* Dark slate */
+    margin-top: 2.5rem;
+}
+
+h3 {
+    font-size: 22px;
+    color: #1b262c;
+}
+
+/* Text */
+p, li {
+    font-size: 17px;
+    color: #162938;  /* Softer dark for readability */
+    line-height: 1.8;
 }
 
 /* Buttons */
 .stButton>button {
-    background-color: #4a90e2;
+    background-color: #3282b8;  /* Soft blue */
     color: white;
     font-size: 16px;
     padding: 0.6rem 1.2rem;
     border-radius: 6px;
     border: none;
+    transition: background 0.3s;
 }
 .stButton>button:hover {
-    background-color: #357ab7;
+    background-color: #0f4c75;
 }
 
-/* Metrics / output */
+/* Metrics boxes */
 .stMetric {
-    background-color: #2a2a3f;
-    color: white;
+    background-color: #f0f4f8;
     border-radius: 6px;
     padding: 1rem;
+}
+
+/* Section separation */
+.section {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -77,6 +98,7 @@ if "page" not in st.session_state:
 # SIDEBAR NAVIGATION
 # --------------------------------------------------
 st.sidebar.title("InsureSense")
+
 page = st.sidebar.radio(
     "Navigation",
     [
@@ -94,6 +116,7 @@ page = st.sidebar.radio(
         "About the Project"
     ].index(st.session_state.page)
 )
+
 st.session_state.page = page
 
 # --------------------------------------------------
@@ -101,8 +124,6 @@ st.session_state.page = page
 # --------------------------------------------------
 if page == "Home":
     st.markdown('<div class="section">', unsafe_allow_html=True)
-
-    # Centered title & subtitle
     st.markdown(
         """
         <div style="text-align: center;">
