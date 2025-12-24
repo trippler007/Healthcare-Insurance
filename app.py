@@ -16,12 +16,14 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# THEME (LIGHT SIDEBAR + BUTTONS)
+# THEME + SIDEBAR FIX (FULL)
 # --------------------------------------------------
 st.markdown("""
 <style>
 
-/* Global background */
+/* -------------------------------
+   GLOBAL BACKGROUND
+--------------------------------*/
 body {
     background-color: #f8fafc;
 }
@@ -33,81 +35,96 @@ body {
     padding-bottom: 3rem;
 }
 
-/* Headings */
+/* -------------------------------
+   HEADINGS
+--------------------------------*/
 h1 {
     font-size: 42px;
     color: #0f172a;
     font-weight: 800;
 }
+
 h2 {
     font-size: 30px;
     color: #1e293b;
+    margin-top: 2.5rem;
 }
+
 h3 {
     font-size: 22px;
     color: #334155;
 }
 
-/* Text */
+/* -------------------------------
+   TEXT
+--------------------------------*/
 p, li {
     font-size: 17px;
     color: #475569;
     line-height: 1.75;
 }
 
-/* ---------------- SIDEBAR ---------------- */
+/* -------------------------------
+   SIDEBAR
+--------------------------------*/
 [data-testid="stSidebar"] {
-    background-color: #e5e7eb;
+    background-color: #0f172a;
     padding-top: 1rem;
 }
 
 [data-testid="stSidebar"] h1 {
-    color: #0f172a;
+    color: #f8fafc;
 }
 
-/* Navigation container */
+/* Radio container */
 [data-testid="stSidebar"] .stRadio {
-    background-color: #f1f5f9;
-    padding: 0.6rem;
-    border-radius: 12px;
+    background-color: #0f172a;
+    padding: 0.5rem;
+    border-radius: 10px;
 }
 
-/* Nav items */
-[data-testid="stSidebar"] .stRadio label {
+/* Each nav item */
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label {
+    background-color: transparent;
     padding: 0.6rem 0.8rem;
+    margin-bottom: 0.3rem;
     border-radius: 8px;
-    color: #0f172a;
-    font-weight: 500;
+    color: #e5e7eb;
+    transition: all 0.2s ease-in-out;
 }
 
 /* Hover */
-[data-testid="stSidebar"] .stRadio label:hover {
-    background-color: #c7d2fe;
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:hover {
+    background-color: #1e293b;
+    cursor: pointer;
 }
 
 /* Selected */
-[data-testid="stSidebar"] .stRadio label:has(input:checked) {
-    background-color: #2563eb;
-    color: white;
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:has(input:checked) {
+    background-color: #e5e7eb;
+    color: #0f172a;
     font-weight: 600;
 }
 
-/* ---------------- BUTTONS ---------------- */
+/* -------------------------------
+   BUTTONS
+--------------------------------*/
 .stButton > button {
-    background-color: #93c5fd;
-    color: #0f172a;
+    background-color: #2563eb;
+    color: white;
     font-size: 16px;
     padding: 0.6rem 1.4rem;
     border-radius: 8px;
     border: none;
-    font-weight: 600;
 }
 
 .stButton > button:hover {
-    background-color: #60a5fa;
+    background-color: #1d4ed8;
 }
 
-/* ---------------- CARDS ---------------- */
+/* -------------------------------
+   CARDS
+--------------------------------*/
 .card {
     background-color: white;
     padding: 1.8rem;
@@ -116,7 +133,9 @@ p, li {
     margin-bottom: 2rem;
 }
 
-/* ---------------- METRICS ---------------- */
+/* -------------------------------
+   METRICS
+--------------------------------*/
 [data-testid="stMetric"] {
     background-color: #ffffff;
     padding: 1.2rem;
@@ -144,7 +163,7 @@ page = st.sidebar.radio(
 )
 
 # --------------------------------------------------
-# HOME
+# HOME PAGE
 # --------------------------------------------------
 if page == "Home":
     st.title("InsureSense")
@@ -153,9 +172,39 @@ if page == "Home":
     st.markdown("""
     <div class="card">
     <p>
-    InsureSense is a machine learning based web application that estimates
-    annual medical insurance costs using personal, health, and lifestyle data.
+    Medical insurance costs depend on age, lifestyle habits, health indicators,
+    and regional factors. Understanding these costs beforehand helps individuals
+    plan healthcare expenses more effectively.
     </p>
+
+    <p>
+    <b>InsureSense</b> is a machine learning powered web application that estimates
+    annual medical insurance costs using user-provided information.
+    </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("## Why InsureSense?")
+    st.markdown("""
+    <div class="card">
+    <ul>
+        <li>Healthcare costs are rising every year</li>
+        <li>Lifestyle choices directly affect insurance premiums</li>
+        <li>Machine learning provides transparent cost estimation</li>
+        <li>Helps in financial and healthcare planning</li>
+    </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("## Who Can Use This?")
+    st.markdown("""
+    <div class="card">
+    <ul>
+        <li>Individuals planning health insurance</li>
+        <li>Students learning applied machine learning</li>
+        <li>Healthcare analytics enthusiasts</li>
+        <li>Portfolio & academic projects</li>
+    </ul>
     </div>
     """, unsafe_allow_html=True)
 
@@ -167,14 +216,17 @@ elif page == "Cost Estimator":
 
     st.markdown("""
     <div class="card">
-    <p>Enter your details below to estimate insurance cost.</p>
+    <p>
+    Enter accurate personal, health, and lifestyle details below.
+    The system will generate an estimated annual insurance cost.
+    </p>
     </div>
     """, unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        age = st.slider("Age", 18, 100, 30)
+        age = st.slider("Age (years)", 18, 100, 30)
         sex = st.selectbox("Gender", ["male", "female"])
 
     with col2:
@@ -190,7 +242,8 @@ elif page == "Cost Estimator":
         ["northeast", "northwest", "southeast", "southwest"]
     )
 
-    bmi = weight / ((height / 100) ** 2)
+    height_m = height / 100
+    bmi = weight / (height_m ** 2)
 
     input_df = pd.DataFrame({
         "age": [age],
@@ -204,11 +257,15 @@ elif page == "Cost Estimator":
     if st.button("Generate Insurance Cost"):
         prediction = model.predict(input_df)[0]
 
-        st.success("Insurance cost estimate generated")
+        st.success("Insurance cost estimate generated successfully")
 
-        c1, c2 = st.columns(2)
-        c1.metric("BMI", f"{bmi:.2f}")
-        c2.metric("Estimated Annual Cost", f"₹ {prediction:,.2f}")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Calculated BMI", f"{bmi:.2f}")
+        with col2:
+            st.metric("Estimated Annual Cost", f"₹ {prediction:,.2f}")
+
+        st.caption("This prediction is for informational purposes only.")
 
 # --------------------------------------------------
 # HOW IT WORKS
@@ -218,7 +275,17 @@ elif page == "How It Works":
 
     st.markdown("""
     <div class="card">
-    <p>Data collection → Feature engineering → Model training → Prediction</p>
+    <h3>1. Data Collection</h3>
+    <p>Real-world medical insurance dataset is used.</p>
+
+    <h3>2. Feature Engineering</h3>
+    <p>BMI calculation and categorical encoding.</p>
+
+    <h3>3. Model Training</h3>
+    <p>Regression-based supervised learning model.</p>
+
+    <h3>4. Prediction</h3>
+    <p>User inputs are converted into insurance cost estimate.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -231,17 +298,19 @@ elif page == "Insights & Factors":
     st.markdown("""
     <div class="card">
     <ul>
-        <li>Age</li>
-        <li>Smoking status</li>
-        <li>BMI</li>
-        <li>Dependents</li>
-        <li>Region</li>
+        <li><b>Age:</b> Higher age increases risk</li>
+        <li><b>Smoking:</b> Most influential factor</li>
+        <li><b>BMI:</b> Indicates health risk</li>
+        <li><b>Dependents:</b> Coverage increases cost</li>
+        <li><b>Region:</b> Healthcare cost varies geographically</li>
     </ul>
+
+    <p><b>Most influential:</b> Smoking status & BMI</p>
     </div>
     """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# ABOUT PAGE (FIXED DATASET SECTION)
+# ABOUT
 # --------------------------------------------------
 elif page == "About the Project":
     st.header("About the Project")
@@ -249,11 +318,11 @@ elif page == "About the Project":
     st.markdown("""
     <div class="card">
     <p>
-    InsureSense demonstrates a real-world machine learning use case
-    in healthcare insurance cost prediction.
+    InsureSense is an end-to-end machine learning project demonstrating
+    healthcare insurance cost prediction using real-world data.
     </p>
 
-    <h3>Tech Stack</h3>
+    <h3>Technology Stack</h3>
     <ul>
         <li>Python</li>
         <li>Pandas & NumPy</li>
@@ -262,19 +331,11 @@ elif page == "About the Project":
         <li>Joblib</li>
     </ul>
 
-    <h3>Dataset</h3>
-    <p>
-    Healthcare Insurance Dataset<br>
-    <a href="https://healthcare-insurance-j6tw5lybbhumwmlrghpvp6.streamlit.app/#medical-insurance-cost-predictor" target="_blank">
-    Access the dataset here
-    </a>
-    </p>
-
     <h3>Use Cases</h3>
     <ul>
         <li>ML Portfolio Project</li>
+        <li>Educational Demonstration</li>
         <li>Healthcare Analytics</li>
-        <li>Insurance Cost Estimation</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
