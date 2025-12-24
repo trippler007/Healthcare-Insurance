@@ -16,12 +16,14 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# CLEAN + READABLE COLOR THEME
+# THEME + SIDEBAR FIX (FULL)
 # --------------------------------------------------
 st.markdown("""
 <style>
 
-/* Background */
+/* -------------------------------
+   GLOBAL BACKGROUND
+--------------------------------*/
 body {
     background-color: #f8fafc;
 }
@@ -33,7 +35,9 @@ body {
     padding-bottom: 3rem;
 }
 
-/* Headings */
+/* -------------------------------
+   HEADINGS
+--------------------------------*/
 h1 {
     font-size: 42px;
     color: #0f172a;
@@ -51,24 +55,60 @@ h3 {
     color: #334155;
 }
 
-/* Text */
+/* -------------------------------
+   TEXT
+--------------------------------*/
 p, li {
     font-size: 17px;
     color: #475569;
     line-height: 1.75;
 }
 
-/* Sidebar */
+/* -------------------------------
+   SIDEBAR
+--------------------------------*/
 [data-testid="stSidebar"] {
     background-color: #0f172a;
+    padding-top: 1rem;
 }
 
-[data-testid="stSidebar"] h1,
-[data-testid="stSidebar"] label {
+[data-testid="stSidebar"] h1 {
+    color: #f8fafc;
+}
+
+/* Radio container */
+[data-testid="stSidebar"] .stRadio {
+    background-color: #0f172a;
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+/* Each nav item */
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label {
+    background-color: transparent;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 0.3rem;
+    border-radius: 8px;
     color: #e5e7eb;
+    transition: all 0.2s ease-in-out;
 }
 
-/* Buttons */
+/* Hover */
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:hover {
+    background-color: #1e293b;
+    cursor: pointer;
+}
+
+/* Selected */
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:has(input:checked) {
+    background-color: #e5e7eb;
+    color: #0f172a;
+    font-weight: 600;
+}
+
+/* -------------------------------
+   BUTTONS
+--------------------------------*/
 .stButton > button {
     background-color: #2563eb;
     color: white;
@@ -82,7 +122,9 @@ p, li {
     background-color: #1d4ed8;
 }
 
-/* Cards */
+/* -------------------------------
+   CARDS
+--------------------------------*/
 .card {
     background-color: white;
     padding: 1.8rem;
@@ -91,7 +133,9 @@ p, li {
     margin-bottom: 2rem;
 }
 
-/* Metrics */
+/* -------------------------------
+   METRICS
+--------------------------------*/
 [data-testid="stMetric"] {
     background-color: #ffffff;
     padding: 1.2rem;
@@ -101,12 +145,6 @@ p, li {
 
 </style>
 """, unsafe_allow_html=True)
-
-# --------------------------------------------------
-# SESSION STATE
-# --------------------------------------------------
-if "page" not in st.session_state:
-    st.session_state.page = "Home"
 
 # --------------------------------------------------
 # SIDEBAR NAVIGATION
@@ -134,14 +172,14 @@ if page == "Home":
     st.markdown("""
     <div class="card">
     <p>
-    Medical insurance costs are influenced by a variety of factors including age,
-    lifestyle habits, health indicators, and geographic location. For most individuals,
-    understanding how these factors affect insurance pricing can be confusing and unclear.
+    Medical insurance costs depend on age, lifestyle habits, health indicators,
+    and regional factors. Understanding these costs beforehand helps individuals
+    plan healthcare expenses more effectively.
     </p>
 
     <p>
-    <b>InsureSense</b> is a machine learning powered web application that helps users
-    estimate their annual medical insurance cost by analyzing key personal and health details.
+    <b>InsureSense</b> is a machine learning powered web application that estimates
+    annual medical insurance costs using user-provided information.
     </p>
     </div>
     """, unsafe_allow_html=True)
@@ -150,10 +188,10 @@ if page == "Home":
     st.markdown("""
     <div class="card">
     <ul>
-        <li>Rising healthcare costs make financial planning more important than ever</li>
-        <li>Lifestyle choices like smoking significantly impact insurance premiums</li>
-        <li>Data-driven predictions help users make informed healthcare decisions</li>
-        <li>Provides quick, transparent, and easy-to-understand cost estimates</li>
+        <li>Healthcare costs are rising every year</li>
+        <li>Lifestyle choices directly affect insurance premiums</li>
+        <li>Machine learning provides transparent cost estimation</li>
+        <li>Helps in financial and healthcare planning</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
@@ -162,20 +200,16 @@ if page == "Home":
     st.markdown("""
     <div class="card">
     <ul>
-        <li>Individuals planning to purchase health insurance</li>
+        <li>Individuals planning health insurance</li>
         <li>Students learning applied machine learning</li>
-        <li>Professionals exploring healthcare analytics</li>
-        <li>Anyone curious about insurance cost drivers</li>
+        <li>Healthcare analytics enthusiasts</li>
+        <li>Portfolio & academic projects</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
 
-    if st.button("Start Cost Estimation"):
-        st.session_state.page = "Cost Estimator"
-        st.rerun()
-
 # --------------------------------------------------
-# COST ESTIMATOR PAGE
+# COST ESTIMATOR
 # --------------------------------------------------
 elif page == "Cost Estimator":
     st.header("Medical Insurance Cost Estimator")
@@ -183,14 +217,11 @@ elif page == "Cost Estimator":
     st.markdown("""
     <div class="card">
     <p>
-    Please enter accurate personal, health, and lifestyle information below.
-    The machine learning model will analyze these inputs and generate an
-    estimated annual insurance cost.
+    Enter accurate personal, health, and lifestyle details below.
+    The system will generate an estimated annual insurance cost.
     </p>
     </div>
     """, unsafe_allow_html=True)
-
-    st.markdown("### Personal & Health Details")
 
     col1, col2, col3 = st.columns(3)
 
@@ -211,7 +242,6 @@ elif page == "Cost Estimator":
         ["northeast", "northwest", "southeast", "southwest"]
     )
 
-    # BMI
     height_m = height / 100
     bmi = weight / (height_m ** 2)
 
@@ -235,7 +265,7 @@ elif page == "Cost Estimator":
         with col2:
             st.metric("Estimated Annual Cost", f"₹ {prediction:,.2f}")
 
-        st.caption("Disclaimer: This prediction is generated by a machine learning model and should be used for informational purposes only.")
+        st.caption("This prediction is for informational purposes only.")
 
 # --------------------------------------------------
 # HOW IT WORKS
@@ -246,28 +276,16 @@ elif page == "How It Works":
     st.markdown("""
     <div class="card">
     <h3>1. Data Collection</h3>
-    <p>
-    The model is trained on a real-world medical insurance dataset containing
-    demographic information, lifestyle habits, and insurance charges.
-    </p>
+    <p>Real-world medical insurance dataset is used.</p>
 
     <h3>2. Feature Engineering</h3>
-    <p>
-    Important features such as BMI are calculated, and categorical variables
-    like gender, smoking status, and region are encoded.
-    </p>
+    <p>BMI calculation and categorical encoding.</p>
 
     <h3>3. Model Training</h3>
-    <p>
-    A supervised regression-based machine learning algorithm learns patterns
-    between user attributes and insurance costs.
-    </p>
+    <p>Regression-based supervised learning model.</p>
 
     <h3>4. Prediction</h3>
-    <p>
-    When a user enters their information, the trained model predicts an
-    estimated annual insurance cost.
-    </p>
+    <p>User inputs are converted into insurance cost estimate.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -279,26 +297,20 @@ elif page == "Insights & Factors":
 
     st.markdown("""
     <div class="card">
-    <p>
-    Medical insurance pricing depends on multiple interconnected factors.
-    Understanding these factors helps users interpret the prediction results
-    more effectively.
-    </p>
-
     <ul>
-        <li><b>Age:</b> Older individuals generally have higher medical risks</li>
-        <li><b>Smoking:</b> Strongest factor influencing insurance premiums</li>
-        <li><b>BMI:</b> Higher BMI increases likelihood of medical conditions</li>
-        <li><b>Dependents:</b> More dependents increase total coverage cost</li>
-        <li><b>Region:</b> Healthcare costs vary by geographic location</li>
+        <li><b>Age:</b> Higher age increases risk</li>
+        <li><b>Smoking:</b> Most influential factor</li>
+        <li><b>BMI:</b> Indicates health risk</li>
+        <li><b>Dependents:</b> Coverage increases cost</li>
+        <li><b>Region:</b> Healthcare cost varies geographically</li>
     </ul>
 
-    <p><b>Most influential factors:</b> Smoking status and BMI</p>
+    <p><b>Most influential:</b> Smoking status & BMI</p>
     </div>
     """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# ABOUT PAGE
+# ABOUT
 # --------------------------------------------------
 elif page == "About the Project":
     st.header("About the Project")
@@ -306,14 +318,8 @@ elif page == "About the Project":
     st.markdown("""
     <div class="card">
     <p>
-    InsureSense is an end-to-end machine learning project designed to demonstrate
-    how data-driven models can be applied to real-world healthcare and insurance
-    problems.
-    </p>
-
-    <p>
-    The project focuses on model training, feature engineering, user interface
-    design, and practical deployment using Streamlit.
+    InsureSense is an end-to-end machine learning project demonstrating
+    healthcare insurance cost prediction using real-world data.
     </p>
 
     <h3>Technology Stack</h3>
@@ -327,10 +333,9 @@ elif page == "About the Project":
 
     <h3>Use Cases</h3>
     <ul>
-        <li>Machine learning portfolio project</li>
-        <li>Educational demonstrations</li>
-        <li>Healthcare cost analysis</li>
-        <li>Insurance pricing insights</li>
+        <li>ML Portfolio Project</li>
+        <li>Educational Demonstration</li>
+        <li>Healthcare Analytics</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
