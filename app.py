@@ -16,7 +16,7 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# THEME + SIDEBAR FIX (FULL)
+# THEME + SIDEBAR FIX (TEXT WHITE ONLY)
 # --------------------------------------------------
 st.markdown("""
 <style>
@@ -73,7 +73,7 @@ p, li {
 }
 
 [data-testid="stSidebar"] h1 {
-    color: #f8fafc;
+    color: #ffffff;
 }
 
 /* Radio container */
@@ -83,13 +83,13 @@ p, li {
     border-radius: 10px;
 }
 
-/* Each nav item */
+/* Each nav item (TEXT WHITE) */
 [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label {
     background-color: transparent;
     padding: 0.6rem 0.8rem;
     margin-bottom: 0.3rem;
     border-radius: 8px;
-    color: #e5e7eb;
+    color: #ffffff;
     transition: all 0.2s ease-in-out;
 }
 
@@ -107,11 +107,11 @@ p, li {
 }
 
 /* -------------------------------
-   BUTTONS
+   BUTTONS (TEXT WHITE)
 --------------------------------*/
 .stButton > button {
     background-color: #2563eb;
-    color: white;
+    color: #ffffff;
     font-size: 16px;
     padding: 0.6rem 1.4rem;
     border-radius: 8px;
@@ -203,7 +203,7 @@ if page == "Home":
         <li>Individuals planning health insurance</li>
         <li>Students learning applied machine learning</li>
         <li>Healthcare analytics enthusiasts</li>
-        <li>Portfolio & academic projects</li>
+        <li>Portfolio and academic projects</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
@@ -305,7 +305,7 @@ elif page == "Insights & Factors":
         <li><b>Region:</b> Healthcare cost varies geographically</li>
     </ul>
 
-    <p><b>Most influential:</b> Smoking status & BMI</p>
+    <p><b>Most influential:</b> Smoking status and BMI</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -325,7 +325,7 @@ elif page == "About the Project":
     <h3>Technology Stack</h3>
     <ul>
         <li>Python</li>
-        <li>Pandas & NumPy</li>
+        <li>Pandas and NumPy</li>
         <li>Scikit-learn</li>
         <li>Streamlit</li>
         <li>Joblib</li>
@@ -333,9 +333,9 @@ elif page == "About the Project":
 
     <h3>Use Cases</h3>
     <ul>
-        <li>ML Portfolio Project</li>
-        <li>Educational Demonstration</li>
-        <li>Healthcare Analytics</li>
+        <li>Machine learning portfolio project</li>
+        <li>Educational demonstration</li>
+        <li>Healthcare analytics</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
