@@ -110,7 +110,7 @@ p, li {
    BUTTONS
 --------------------------------*/
 .stButton > button {
-    background-color: #2563eb;
+    background-color: #a6a3f7;
     color: white;
     font-size: 16px;
     padding: 0.6rem 1.4rem;
