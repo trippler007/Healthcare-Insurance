@@ -16,23 +16,28 @@ st.set_page_config(
 model = joblib.load("model.joblib")
 
 # --------------------------------------------------
-# THEME + SIDEBAR + BUTTON TEXT FIX
+# THEME + SIDEBAR FIX (FULL)
 # --------------------------------------------------
 st.markdown("""
 <style>
 
-/* GLOBAL */
+/* -------------------------------
+   GLOBAL BACKGROUND
+--------------------------------*/
 body {
     background-color: #f8fafc;
 }
 
+/* Main container */
 .block-container {
     max-width: 1100px;
     padding-top: 2.5rem;
     padding-bottom: 3rem;
 }
 
-/* HEADINGS */
+/* -------------------------------
+   HEADINGS
+--------------------------------*/
 h1 {
     font-size: 42px;
     color: #0f172a;
@@ -50,67 +55,76 @@ h3 {
     color: #334155;
 }
 
-/* TEXT */
+/* -------------------------------
+   TEXT
+--------------------------------*/
 p, li {
     font-size: 17px;
     color: #475569;
     line-height: 1.75;
 }
 
-/* SIDEBAR */
+/* -------------------------------
+   SIDEBAR
+--------------------------------*/
 [data-testid="stSidebar"] {
     background-color: #0f172a;
     padding-top: 1rem;
 }
 
-/* SIDEBAR TITLE */
 [data-testid="stSidebar"] h1 {
-    color: #ffffff;
+    color: #f8fafc;
 }
 
-/* RADIO GROUP */
-[data-testid="stSidebar"] div[role="radiogroup"] {
+/* Radio container */
+[data-testid="stSidebar"] .stRadio {
     background-color: #0f172a;
+    padding: 0.5rem;
+    border-radius: 10px;
 }
 
-/* RADIO TEXT WHITE */
-[data-testid="stSidebar"] div[role="radiogroup"] label span {
-    color: #ffffff !important;
+/* Each nav item */
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label {
+    background-color: transparent;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 0.3rem;
+    border-radius: 8px;
+    color: #e5e7eb;
+    transition: all 0.2s ease-in-out;
 }
 
-/* RADIO HOVER */
-[data-testid="stSidebar"] div[role="radiogroup"] label:hover {
+/* Hover */
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:hover {
     background-color: #1e293b;
-    border-radius: 8px;
+    cursor: pointer;
 }
 
-/* RADIO SELECTED */
-[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) {
-    background-color: #2563eb;
-    border-radius: 8px;
-}
-[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) span {
-    color: #ffffff !important;
+/* Selected */
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:has(input:checked) {
+    background-color: #e5e7eb;
+    color: #0f172a;
     font-weight: 600;
 }
 
-/* BUTTON */
+/* -------------------------------
+   BUTTONS
+--------------------------------*/
 .stButton > button {
-    background-color: #2563eb !important;
-    color: #ffffff !important;
+    background-color: #2563eb;
+    color: white;
     font-size: 16px;
     padding: 0.6rem 1.4rem;
     border-radius: 8px;
     border: none;
 }
-.stButton > button span {
-    color: #ffffff !important;
-}
+
 .stButton > button:hover {
-    background-color: #1d4ed8 !important;
+    background-color: #1d4ed8;
 }
 
-/* CARDS */
+/* -------------------------------
+   CARDS
+--------------------------------*/
 .card {
     background-color: white;
     padding: 1.8rem;
@@ -119,7 +133,9 @@ p, li {
     margin-bottom: 2rem;
 }
 
-/* METRICS */
+/* -------------------------------
+   METRICS
+--------------------------------*/
 [data-testid="stMetric"] {
     background-color: #ffffff;
     padding: 1.2rem;
@@ -243,11 +259,13 @@ elif page == "Cost Estimator":
 
         st.success("Insurance cost estimate generated successfully")
 
-        c1, c2 = st.columns(2)
-        c1.metric("Calculated BMI", f"{bmi:.2f}")
-        c2.metric("Estimated Annual Cost", f"₹ {prediction:,.2f}")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Calculated BMI", f"{bmi:.2f}")
+        with col2:
+            st.metric("Estimated Annual Cost", f"₹ {prediction:,.2f}")
 
-        st.caption("This estimate is for informational purposes only.")
+        st.caption("This prediction is for informational purposes only.")
 
 # --------------------------------------------------
 # HOW IT WORKS
@@ -313,19 +331,11 @@ elif page == "About the Project":
         <li>Joblib</li>
     </ul>
 
-    <h3>Dataset</h3>
-    <p>
-    Healthcare Insurance Dataset<br>
-    <a href="https://healthcare-insurance-j6tw5lybbhumwmlrghpvp6.streamlit.app/#medical-insurance-cost-predictor" target="_blank">
-    Access the dataset here
-    </a>
-    </p>
-
-    <h3>Use Case</h3>
+    <h3>Use Cases</h3>
     <ul>
-        <li>Educational demonstrations of machine learning</li>
-        <li>Financial planning and cost estimation</li>
-        <li>Healthcare analytics use cases</li>
+        <li>ML Portfolio Project</li>
+        <li>Educational Demonstration</li>
+        <li>Healthcare Analytics</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
